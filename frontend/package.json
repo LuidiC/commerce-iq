@@ -1,0 +1,33 @@
+{
+  "name": "commerceiq-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run --environment node",
+    "test:watch": "vitest --environment node"
+  },
+  "dependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "lucide-react": "0.555.0",
+    "next": "16.2.11",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "recharts": "3.5.1",
+    "typescript": "5.9.3"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.1",
+    "@testing-library/user-event": "14.6.1",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.2.11",
+    "jsdom": "27.2.0",
+    "vitest": "4.0.15"
+  }
+}

@@ -1,0 +1,2491 @@
+{
+  "source": {
+    "name": "Brazilian E-Commerce Public Dataset by Olist",
+    "license": "CC BY-NC-SA 4.0",
+    "datasetUrl": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+    "generatedFromRawData": true
+  },
+  "periodStart": "2017-09-01",
+  "periodEnd": "2018-08-31",
+  "kpis": {
+    "revenue": {
+      "value": 10187571.0,
+      "previousValue": 3033927.11,
+      "changePct": 235.79
+    },
+    "orders": {
+      "value": 74213,
+      "previousValue": 22265,
+      "changePct": 233.32
+    },
+    "averageOrderValue": {
+      "value": 137.27,
+      "previousValue": 136.26,
+      "changePct": 0.74
+    },
+    "customers": {
+      "value": 72247,
+      "previousValue": 21665,
+      "changePct": 233.47
+    },
+    "averageReviewScore": {
+      "value": 4.13,
+      "previousValue": 4.23,
+      "changePct": -2.36
+    }
+  },
+  "revenueTrend": [
+    {
+      "month": "2017-09-01",
+      "revenue": 607399.67,
+      "orders": 4150,
+      "monthOverMonthPct": null,
+      "cumulativeRevenue": 607399.67,
+      "revenueMovingAverage3m": 607399.67
+    },
+    {
+      "month": "2017-10-01",
+      "revenue": 648247.65,
+      "orders": 4478,
+      "monthOverMonthPct": 6.73,
+      "cumulativeRevenue": 1255647.32,
+      "revenueMovingAverage3m": 627823.66
+    },
+    {
+      "month": "2017-11-01",
+      "revenue": 987765.37,
+      "orders": 7289,
+      "monthOverMonthPct": 52.37,
+      "cumulativeRevenue": 2243412.69,
+      "revenueMovingAverage3m": 747804.23
+    },
+    {
+      "month": "2017-12-01",
+      "revenue": 726033.19,
+      "orders": 5513,
+      "monthOverMonthPct": -26.5,
+      "cumulativeRevenue": 2969445.88,
+      "revenueMovingAverage3m": 787348.74
+    },
+    {
+      "month": "2018-01-01",
+      "revenue": 924645.0,
+      "orders": 7069,
+      "monthOverMonthPct": 27.36,
+      "cumulativeRevenue": 3894090.88,
+      "revenueMovingAverage3m": 879481.19
+    },
+    {
+      "month": "2018-02-01",
+      "revenue": 826437.13,
+      "orders": 6555,
+      "monthOverMonthPct": -10.62,
+      "cumulativeRevenue": 4720528.01,
+      "revenueMovingAverage3m": 825705.11
+    },
+    {
+      "month": "2018-03-01",
+      "revenue": 953356.25,
+      "orders": 7003,
+      "monthOverMonthPct": 15.36,
+      "cumulativeRevenue": 5673884.26,
+      "revenueMovingAverage3m": 901479.46
+    },
+    {
+      "month": "2018-04-01",
+      "revenue": 973534.09,
+      "orders": 6798,
+      "monthOverMonthPct": 2.12,
+      "cumulativeRevenue": 6647418.35,
+      "revenueMovingAverage3m": 917775.82
+    },
+    {
+      "month": "2018-05-01",
+      "revenue": 977544.69,
+      "orders": 6749,
+      "monthOverMonthPct": 0.41,
+      "cumulativeRevenue": 7624963.04,
+      "revenueMovingAverage3m": 968145.01
+    },
+    {
+      "month": "2018-06-01",
+      "revenue": 856077.86,
+      "orders": 6099,
+      "monthOverMonthPct": -12.43,
+      "cumulativeRevenue": 8481040.9,
+      "revenueMovingAverage3m": 935718.88
+    },
+    {
+      "month": "2018-07-01",
+      "revenue": 867953.46,
+      "orders": 6159,
+      "monthOverMonthPct": 1.39,
+      "cumulativeRevenue": 9348994.36,
+      "revenueMovingAverage3m": 900525.34
+    },
+    {
+      "month": "2018-08-01",
+      "revenue": 838576.64,
+      "orders": 6351,
+      "monthOverMonthPct": -3.38,
+      "cumulativeRevenue": 10187571.0,
+      "revenueMovingAverage3m": 854202.65
+    }
+  ],
+  "categories": [
+    {
+      "category": "health_beauty",
+      "revenue": 986035.8,
+      "orders": 6928,
+      "items": 7600,
+      "averageReviewScore": 4.19,
+      "revenueRank": 1,
+      "revenueSharePct": 9.68
+    },
+    {
+      "category": "watches_gifts",
+      "revenue": 962328.05,
+      "orders": 4708,
+      "items": 5016,
+      "averageReviewScore": 4.04,
+      "revenueRank": 2,
+      "revenueSharePct": 9.45
+    },
+    {
+      "category": "bed_bath_table",
+      "revenue": 768510.95,
+      "orders": 7022,
+      "items": 8387,
+      "averageReviewScore": 3.87,
+      "revenueRank": 3,
+      "revenueSharePct": 7.54
+    },
+    {
+      "category": "sports_leisure",
+      "revenue": 736116.07,
+      "orders": 5771,
+      "items": 6432,
+      "averageReviewScore": 4.13,
+      "revenueRank": 4,
+      "revenueSharePct": 7.23
+    },
+    {
+      "category": "computers_accessories",
+      "revenue": 673424.32,
+      "orders": 5116,
+      "items": 5974,
+      "averageReviewScore": 3.94,
+      "revenueRank": 5,
+      "revenueSharePct": 6.61
+    },
+    {
+      "category": "furniture_decor",
+      "revenue": 535378.59,
+      "orders": 4523,
+      "items": 5914,
+      "averageReviewScore": 3.93,
+      "revenueRank": 6,
+      "revenueSharePct": 5.26
+    },
+    {
+      "category": "housewares",
+      "revenue": 486807.08,
+      "orders": 4344,
+      "items": 5147,
+      "averageReviewScore": 4.08,
+      "revenueRank": 7,
+      "revenueSharePct": 4.78
+    },
+    {
+      "category": "auto",
+      "revenue": 452590.91,
+      "orders": 3125,
+      "items": 3358,
+      "averageReviewScore": 4.11,
+      "revenueRank": 8,
+      "revenueSharePct": 4.44
+    },
+    {
+      "category": "cool_stuff",
+      "revenue": 402851.63,
+      "orders": 2346,
+      "items": 2449,
+      "averageReviewScore": 4.13,
+      "revenueRank": 9,
+      "revenueSharePct": 3.95
+    },
+    {
+      "category": "toys",
+      "revenue": 348730.34,
+      "orders": 2771,
+      "items": 2947,
+      "averageReviewScore": 4.14,
+      "revenueRank": 10,
+      "revenueSharePct": 3.42
+    },
+    {
+      "category": "garden_tools",
+      "revenue": 331084.25,
+      "orders": 2571,
+      "items": 3221,
+      "averageReviewScore": 4.04,
+      "revenueRank": 11,
+      "revenueSharePct": 3.25
+    },
+    {
+      "category": "baby",
+      "revenue": 331052.41,
+      "orders": 2241,
+      "items": 2375,
+      "averageReviewScore": 4.04,
+      "revenueRank": 12,
+      "revenueSharePct": 3.25
+    },
+    {
+      "category": "perfumery",
+      "revenue": 263362.19,
+      "orders": 2280,
+      "items": 2483,
+      "averageReviewScore": 4.21,
+      "revenueRank": 13,
+      "revenueSharePct": 2.59
+    },
+    {
+      "category": "telephony",
+      "revenue": 252159.3,
+      "orders": 3077,
+      "items": 3341,
+      "averageReviewScore": 3.97,
+      "revenueRank": 14,
+      "revenueSharePct": 2.48
+    },
+    {
+      "category": "office_furniture",
+      "revenue": 192191.42,
+      "orders": 854,
+      "items": 1181,
+      "averageReviewScore": 3.42,
+      "revenueRank": 15,
+      "revenueSharePct": 1.89
+    },
+    {
+      "category": "stationery",
+      "revenue": 187063.73,
+      "orders": 1903,
+      "items": 2083,
+      "averageReviewScore": 4.21,
+      "revenueRank": 16,
+      "revenueSharePct": 1.84
+    },
+    {
+      "category": "computers",
+      "revenue": 180535.15,
+      "orders": 147,
+      "items": 169,
+      "averageReviewScore": 4.2,
+      "revenueRank": 17,
+      "revenueSharePct": 1.77
+    },
+    {
+      "category": "pet_shop",
+      "revenue": 161922.67,
+      "orders": 1279,
+      "items": 1462,
+      "averageReviewScore": 4.22,
+      "revenueRank": 18,
+      "revenueSharePct": 1.59
+    },
+    {
+      "category": "musical_instruments",
+      "revenue": 147264.33,
+      "orders": 493,
+      "items": 522,
+      "averageReviewScore": 4.26,
+      "revenueRank": 19,
+      "revenueSharePct": 1.45
+    },
+    {
+      "category": "construction_tools_construction",
+      "revenue": 139527.0,
+      "orders": 716,
+      "items": 890,
+      "averageReviewScore": 4.09,
+      "revenueRank": 20,
+      "revenueSharePct": 1.37
+    },
+    {
+      "category": "electronics",
+      "revenue": 125962.51,
+      "orders": 2178,
+      "items": 2357,
+      "averageReviewScore": 4.06,
+      "revenueRank": 21,
+      "revenueSharePct": 1.24
+    },
+    {
+      "category": "unknown",
+      "revenue": 121973.58,
+      "orders": 967,
+      "items": 1056,
+      "averageReviewScore": 3.86,
+      "revenueRank": 22,
+      "revenueSharePct": 1.2
+    },
+    {
+      "category": "small_appliances",
+      "revenue": 116731.22,
+      "orders": 426,
+      "items": 465,
+      "averageReviewScore": 4.19,
+      "revenueRank": 23,
+      "revenueSharePct": 1.15
+    },
+    {
+      "category": "fashion_bags_accessories",
+      "revenue": 111804.42,
+      "orders": 1315,
+      "items": 1425,
+      "averageReviewScore": 4.17,
+      "revenueRank": 24,
+      "revenueSharePct": 1.1
+    },
+    {
+      "category": "consoles_games",
+      "revenue": 100685.66,
+      "orders": 738,
+      "items": 790,
+      "averageReviewScore": 4.09,
+      "revenueRank": 25,
+      "revenueSharePct": 0.99
+    },
+    {
+      "category": "home_appliances_2",
+      "revenue": 97480.02,
+      "orders": 181,
+      "items": 184,
+      "averageReviewScore": 4.16,
+      "revenueRank": 26,
+      "revenueSharePct": 0.96
+    },
+    {
+      "category": "luggage_accessories",
+      "revenue": 88009.01,
+      "orders": 663,
+      "items": 701,
+      "averageReviewScore": 4.31,
+      "revenueRank": 27,
+      "revenueSharePct": 0.86
+    },
+    {
+      "category": "home_construction",
+      "revenue": 74686.12,
+      "orders": 459,
+      "items": 559,
+      "averageReviewScore": 3.95,
+      "revenueRank": 28,
+      "revenueSharePct": 0.73
+    },
+    {
+      "category": "agro_industry_and_commerce",
+      "revenue": 65955.36,
+      "orders": 159,
+      "items": 184,
+      "averageReviewScore": 4.09,
+      "revenueRank": 29,
+      "revenueSharePct": 0.65
+    },
+    {
+      "category": "home_appliances",
+      "revenue": 65265.56,
+      "orders": 573,
+      "items": 577,
+      "averageReviewScore": 4.22,
+      "revenueRank": 30,
+      "revenueSharePct": 0.64
+    },
+    {
+      "category": "small_appliances_home_oven_and_coffee",
+      "revenue": 46495.76,
+      "orders": 70,
+      "items": 71,
+      "averageReviewScore": 4.45,
+      "revenueRank": 31,
+      "revenueSharePct": 0.46
+    },
+    {
+      "category": "fixed_telephony",
+      "revenue": 46392.93,
+      "orders": 107,
+      "items": 130,
+      "averageReviewScore": 3.53,
+      "revenueRank": 32,
+      "revenueSharePct": 0.46
+    },
+    {
+      "category": "furniture_living_room",
+      "revenue": 44804.88,
+      "orders": 280,
+      "items": 328,
+      "averageReviewScore": 3.84,
+      "revenueRank": 33,
+      "revenueSharePct": 0.44
+    },
+    {
+      "category": "audio",
+      "revenue": 42696.27,
+      "orders": 278,
+      "items": 289,
+      "averageReviewScore": 3.82,
+      "revenueRank": 34,
+      "revenueSharePct": 0.42
+    },
+    {
+      "category": "kitchen_dining_laundry_garden_furniture",
+      "revenue": 40132.72,
+      "orders": 198,
+      "items": 228,
+      "averageReviewScore": 4.0,
+      "revenueRank": 35,
+      "revenueSharePct": 0.39
+    },
+    {
+      "category": "construction_tools_lights",
+      "revenue": 39008.0,
+      "orders": 239,
+      "items": 298,
+      "averageReviewScore": 4.07,
+      "revenueRank": 36,
+      "revenueSharePct": 0.38
+    },
+    {
+      "category": "construction_tools_safety",
+      "revenue": 38385.32,
+      "orders": 157,
+      "items": 181,
+      "averageReviewScore": 3.98,
+      "revenueRank": 37,
+      "revenueSharePct": 0.38
+    },
+    {
+      "category": "home_confort",
+      "revenue": 36562.98,
+      "orders": 252,
+      "items": 273,
+      "averageReviewScore": 3.84,
+      "revenueRank": 38,
+      "revenueSharePct": 0.36
+    },
+    {
+      "category": "industry_commerce_and_business",
+      "revenue": 35782.58,
+      "orders": 217,
+      "items": 249,
+      "averageReviewScore": 4.12,
+      "revenueRank": 39,
+      "revenueSharePct": 0.35
+    },
+    {
+      "category": "air_conditioning",
+      "revenue": 33642.05,
+      "orders": 167,
+      "items": 196,
+      "averageReviewScore": 3.97,
+      "revenueRank": 40,
+      "revenueSharePct": 0.33
+    },
+    {
+      "category": "books_general_interest",
+      "revenue": 33506.06,
+      "orders": 378,
+      "items": 411,
+      "averageReviewScore": 4.48,
+      "revenueRank": 41,
+      "revenueSharePct": 0.33
+    },
+    {
+      "category": "food",
+      "revenue": 23541.28,
+      "orders": 384,
+      "items": 440,
+      "averageReviewScore": 4.24,
+      "revenueRank": 42,
+      "revenueSharePct": 0.23
+    },
+    {
+      "category": "drinks",
+      "revenue": 20532.11,
+      "orders": 277,
+      "items": 349,
+      "averageReviewScore": 4.12,
+      "revenueRank": 43,
+      "revenueSharePct": 0.2
+    },
+    {
+      "category": "signaling_and_security",
+      "revenue": 19615.43,
+      "orders": 122,
+      "items": 179,
+      "averageReviewScore": 4.07,
+      "revenueRank": 44,
+      "revenueSharePct": 0.19
+    },
+    {
+      "category": "costruction_tools_garden",
+      "revenue": 19510.29,
+      "orders": 160,
+      "items": 193,
+      "averageReviewScore": 4.11,
+      "revenueRank": 45,
+      "revenueSharePct": 0.19
+    },
+    {
+      "category": "books_technical",
+      "revenue": 16260.95,
+      "orders": 236,
+      "items": 243,
+      "averageReviewScore": 4.36,
+      "revenueRank": 46,
+      "revenueSharePct": 0.16
+    },
+    {
+      "category": "art",
+      "revenue": 15603.8,
+      "orders": 173,
+      "items": 175,
+      "averageReviewScore": 4.03,
+      "revenueRank": 47,
+      "revenueSharePct": 0.15
+    },
+    {
+      "category": "costruction_tools_tools",
+      "revenue": 14371.05,
+      "orders": 94,
+      "items": 100,
+      "averageReviewScore": 4.43,
+      "revenueRank": 48,
+      "revenueSharePct": 0.14
+    },
+    {
+      "category": "fashion_shoes",
+      "revenue": 14064.39,
+      "orders": 124,
+      "items": 133,
+      "averageReviewScore": 4.26,
+      "revenueRank": 49,
+      "revenueSharePct": 0.14
+    },
+    {
+      "category": "food_drink",
+      "revenue": 13743.28,
+      "orders": 184,
+      "items": 225,
+      "averageReviewScore": 4.31,
+      "revenueRank": 50,
+      "revenueSharePct": 0.13
+    },
+    {
+      "category": "furniture_bedroom",
+      "revenue": 13524.67,
+      "orders": 63,
+      "items": 73,
+      "averageReviewScore": 4.18,
+      "revenueRank": 51,
+      "revenueSharePct": 0.13
+    },
+    {
+      "category": "market_place",
+      "revenue": 11791.55,
+      "orders": 140,
+      "items": 159,
+      "averageReviewScore": 3.96,
+      "revenueRank": 52,
+      "revenueSharePct": 0.12
+    },
+    {
+      "category": "christmas_supplies",
+      "revenue": 8360.15,
+      "orders": 119,
+      "items": 143,
+      "averageReviewScore": 4.04,
+      "revenueRank": 53,
+      "revenueSharePct": 0.08
+    },
+    {
+      "category": "fashion_underwear_beach",
+      "revenue": 6611.5,
+      "orders": 77,
+      "items": 84,
+      "averageReviewScore": 4.0,
+      "revenueRank": 54,
+      "revenueSharePct": 0.06
+    },
+    {
+      "category": "cine_photo",
+      "revenue": 6359.47,
+      "orders": 58,
+      "items": 65,
+      "averageReviewScore": 4.23,
+      "revenueRank": 55,
+      "revenueSharePct": 0.06
+    },
+    {
+      "category": "fashion_male_clothing",
+      "revenue": 5783.15,
+      "orders": 56,
+      "items": 67,
+      "averageReviewScore": 3.68,
+      "revenueRank": 56,
+      "revenueSharePct": 0.06
+    },
+    {
+      "category": "music",
+      "revenue": 4530.86,
+      "orders": 28,
+      "items": 28,
+      "averageReviewScore": 4.25,
+      "revenueRank": 57,
+      "revenueSharePct": 0.04
+    },
+    {
+      "category": "party_supplies",
+      "revenue": 4395.29,
+      "orders": 37,
+      "items": 41,
+      "averageReviewScore": 3.8,
+      "revenueRank": 58,
+      "revenueSharePct": 0.04
+    },
+    {
+      "category": "books_imported",
+      "revenue": 4238.87,
+      "orders": 47,
+      "items": 53,
+      "averageReviewScore": 4.55,
+      "revenueRank": 59,
+      "revenueSharePct": 0.04
+    },
+    {
+      "category": "portateis_cozinha_e_preparadores_de_alimentos",
+      "revenue": 3933.63,
+      "orders": 13,
+      "items": 14,
+      "averageReviewScore": 3.43,
+      "revenueRank": 60,
+      "revenueSharePct": 0.04
+    },
+    {
+      "category": "furniture_mattress_and_upholstery",
+      "revenue": 2999.3,
+      "orders": 30,
+      "items": 30,
+      "averageReviewScore": 3.97,
+      "revenueRank": 61,
+      "revenueSharePct": 0.03
+    },
+    {
+      "category": "tablets_printing_image",
+      "revenue": 2370.66,
+      "orders": 36,
+      "items": 38,
+      "averageReviewScore": 4.05,
+      "revenueRank": 62,
+      "revenueSharePct": 0.02
+    },
+    {
+      "category": "arts_and_craftmanship",
+      "revenue": 1662.12,
+      "orders": 21,
+      "items": 22,
+      "averageReviewScore": 4.05,
+      "revenueRank": 63,
+      "revenueSharePct": 0.02
+    },
+    {
+      "category": "dvds_blu_ray",
+      "revenue": 1546.8,
+      "orders": 32,
+      "items": 35,
+      "averageReviewScore": 4.31,
+      "revenueRank": 64,
+      "revenueSharePct": 0.02
+    },
+    {
+      "category": "diapers_and_hygiene",
+      "revenue": 1365.89,
+      "orders": 24,
+      "items": 36,
+      "averageReviewScore": 3.33,
+      "revenueRank": 65,
+      "revenueSharePct": 0.01
+    },
+    {
+      "category": "flowers",
+      "revenue": 1110.04,
+      "orders": 29,
+      "items": 33,
+      "averageReviewScore": 4.42,
+      "revenueRank": 66,
+      "revenueSharePct": 0.01
+    },
+    {
+      "category": "la_cuisine",
+      "revenue": 1055.0,
+      "orders": 5,
+      "items": 6,
+      "averageReviewScore": 3.2,
+      "revenueRank": 67,
+      "revenueSharePct": 0.01
+    },
+    {
+      "category": "fashio_female_clothing",
+      "revenue": 1032.34,
+      "orders": 13,
+      "items": 22,
+      "averageReviewScore": 4.0,
+      "revenueRank": 68,
+      "revenueSharePct": 0.01
+    },
+    {
+      "category": "fashion_sport",
+      "revenue": 933.8,
+      "orders": 10,
+      "items": 13,
+      "averageReviewScore": 4.38,
+      "revenueRank": 69,
+      "revenueSharePct": 0.01
+    },
+    {
+      "category": "pc_gamer",
+      "revenue": 786.99,
+      "orders": 3,
+      "items": 4,
+      "averageReviewScore": 3.75,
+      "revenueRank": 70,
+      "revenueSharePct": 0.01
+    },
+    {
+      "category": "cds_dvds_musicals",
+      "revenue": 370.0,
+      "orders": 6,
+      "items": 6,
+      "averageReviewScore": 5.0,
+      "revenueRank": 71,
+      "revenueSharePct": 0.0
+    },
+    {
+      "category": "fashion_childrens_clothes",
+      "revenue": 299.95,
+      "orders": 5,
+      "items": 5,
+      "averageReviewScore": 5.0,
+      "revenueRank": 72,
+      "revenueSharePct": 0.0
+    },
+    {
+      "category": "home_comfort_2",
+      "revenue": 267.19,
+      "orders": 14,
+      "items": 19,
+      "averageReviewScore": 2.88,
+      "revenueRank": 73,
+      "revenueSharePct": 0.0
+    },
+    {
+      "category": "security_and_services",
+      "revenue": 100.0,
+      "orders": 1,
+      "items": 1,
+      "averageReviewScore": 1.0,
+      "revenueRank": 74,
+      "revenueSharePct": 0.0
+    }
+  ],
+  "customerBehavior": {
+    "customers": 72247,
+    "repeatCustomers": 1794,
+    "repeatCustomerRatePct": 2.48,
+    "averageDaysBetweenPurchases": 53.22,
+    "highValueCustomers": 2795
+  },
+  "deliveryImpact": [
+    {
+      "deliveryStatus": "late",
+      "orders": 6902,
+      "averageDeliveryDays": 30.72,
+      "averageReviewScore": 2.55,
+      "orderSharePct": 9.3
+    },
+    {
+      "deliveryStatus": "on_time",
+      "orders": 67304,
+      "averageDeliveryDays": 10.79,
+      "averageReviewScore": 4.29,
+      "orderSharePct": 90.7
+    }
+  ],
+  "sellers": [
+    {
+      "sellerLabel": "Seller 01",
+      "state": "SP",
+      "revenue": 201576.0,
+      "orders": 1013,
+      "averageOrderValue": 198.99,
+      "averageReviewScore": 4.14,
+      "revenueRank": 1
+    },
+    {
+      "sellerLabel": "Seller 02",
+      "state": "BA",
+      "revenue": 184844.44,
+      "orders": 316,
+      "averageOrderValue": 584.95,
+      "averageReviewScore": 4.11,
+      "revenueRank": 2
+    },
+    {
+      "sellerLabel": "Seller 03",
+      "state": "SP",
+      "revenue": 149555.65,
+      "orders": 464,
+      "averageOrderValue": 322.32,
+      "averageReviewScore": 4.31,
+      "revenueRank": 3
+    },
+    {
+      "sellerLabel": "Seller 04",
+      "state": "SP",
+      "revenue": 133272.16,
+      "orders": 879,
+      "averageOrderValue": 151.62,
+      "averageReviewScore": 3.84,
+      "revenueRank": 4
+    },
+    {
+      "sellerLabel": "Seller 05",
+      "state": "SP",
+      "revenue": 132075.47,
+      "orders": 1112,
+      "averageOrderValue": 118.77,
+      "averageReviewScore": 4.08,
+      "revenueRank": 5
+    },
+    {
+      "sellerLabel": "Seller 06",
+      "state": "SP",
+      "revenue": 131317.05,
+      "orders": 658,
+      "averageOrderValue": 199.57,
+      "averageReviewScore": 3.2,
+      "revenueRank": 6
+    },
+    {
+      "sellerLabel": "Seller 07",
+      "state": "SP",
+      "revenue": 129120.94,
+      "orders": 1233,
+      "averageOrderValue": 104.72,
+      "averageReviewScore": 4.08,
+      "revenueRank": 7
+    },
+    {
+      "sellerLabel": "Seller 08",
+      "state": "SP",
+      "revenue": 126351.03,
+      "orders": 1148,
+      "averageOrderValue": 110.06,
+      "averageReviewScore": 3.73,
+      "revenueRank": 8
+    },
+    {
+      "sellerLabel": "Seller 09",
+      "state": "SP",
+      "revenue": 112436.18,
+      "orders": 558,
+      "averageOrderValue": 201.5,
+      "averageReviewScore": 4.02,
+      "revenueRank": 9
+    },
+    {
+      "sellerLabel": "Seller 10",
+      "state": "SP",
+      "revenue": 98226.88,
+      "orders": 1462,
+      "averageOrderValue": 67.19,
+      "averageReviewScore": 3.93,
+      "revenueRank": 10
+    },
+    {
+      "sellerLabel": "Seller 11",
+      "state": "SP",
+      "revenue": 91261.41,
+      "orders": 1205,
+      "averageOrderValue": 75.74,
+      "averageReviewScore": 3.94,
+      "revenueRank": 11
+    },
+    {
+      "sellerLabel": "Seller 12",
+      "state": "MG",
+      "revenue": 89709.93,
+      "orders": 631,
+      "averageOrderValue": 142.17,
+      "averageReviewScore": 4.25,
+      "revenueRank": 12
+    },
+    {
+      "sellerLabel": "Seller 13",
+      "state": "RJ",
+      "revenue": 83584.09,
+      "orders": 366,
+      "averageOrderValue": 228.37,
+      "averageReviewScore": 4.19,
+      "revenueRank": 13
+    },
+    {
+      "sellerLabel": "Seller 14",
+      "state": "RJ",
+      "revenue": 79144.9,
+      "orders": 165,
+      "averageOrderValue": 479.67,
+      "averageReviewScore": 4.45,
+      "revenueRank": 14
+    },
+    {
+      "sellerLabel": "Seller 15",
+      "state": "SP",
+      "revenue": 75552.3,
+      "orders": 832,
+      "averageOrderValue": 90.81,
+      "averageReviewScore": 4.1,
+      "revenueRank": 15
+    },
+    {
+      "sellerLabel": "Seller 16",
+      "state": "SP",
+      "revenue": 75005.31,
+      "orders": 140,
+      "averageOrderValue": 535.75,
+      "averageReviewScore": 3.52,
+      "revenueRank": 16
+    },
+    {
+      "sellerLabel": "Seller 17",
+      "state": "SP",
+      "revenue": 74657.19,
+      "orders": 599,
+      "averageOrderValue": 124.64,
+      "averageReviewScore": 4.22,
+      "revenueRank": 17
+    },
+    {
+      "sellerLabel": "Seller 18",
+      "state": "SP",
+      "revenue": 71935.81,
+      "orders": 165,
+      "averageOrderValue": 435.97,
+      "averageReviewScore": 4.38,
+      "revenueRank": 18
+    },
+    {
+      "sellerLabel": "Seller 19",
+      "state": "SP",
+      "revenue": 71762.41,
+      "orders": 1111,
+      "averageOrderValue": 64.59,
+      "averageReviewScore": 4.12,
+      "revenueRank": 19
+    },
+    {
+      "sellerLabel": "Seller 20",
+      "state": "RJ",
+      "revenue": 69765.7,
+      "orders": 502,
+      "averageOrderValue": 138.98,
+      "averageReviewScore": 4.2,
+      "revenueRank": 20
+    },
+    {
+      "sellerLabel": "Seller 21",
+      "state": "SP",
+      "revenue": 66104.0,
+      "orders": 211,
+      "averageOrderValue": 313.29,
+      "averageReviewScore": 4.22,
+      "revenueRank": 21
+    },
+    {
+      "sellerLabel": "Seller 22",
+      "state": "SC",
+      "revenue": 58991.8,
+      "orders": 92,
+      "averageOrderValue": 641.22,
+      "averageReviewScore": 3.95,
+      "revenueRank": 22
+    },
+    {
+      "sellerLabel": "Seller 23",
+      "state": "PE",
+      "revenue": 55126.3,
+      "orders": 337,
+      "averageOrderValue": 163.58,
+      "averageReviewScore": 4.17,
+      "revenueRank": 23
+    },
+    {
+      "sellerLabel": "Seller 24",
+      "state": "SP",
+      "revenue": 51478.18,
+      "orders": 198,
+      "averageOrderValue": 259.99,
+      "averageReviewScore": 4.2,
+      "revenueRank": 24
+    },
+    {
+      "sellerLabel": "Seller 25",
+      "state": "RJ",
+      "revenue": 51057.54,
+      "orders": 57,
+      "averageOrderValue": 895.75,
+      "averageReviewScore": 4.59,
+      "revenueRank": 25
+    },
+    {
+      "sellerLabel": "Seller 26",
+      "state": "RJ",
+      "revenue": 50628.9,
+      "orders": 30,
+      "averageOrderValue": 1687.63,
+      "averageReviewScore": 4.19,
+      "revenueRank": 26
+    },
+    {
+      "sellerLabel": "Seller 27",
+      "state": "PR",
+      "revenue": 48318.92,
+      "orders": 128,
+      "averageOrderValue": 377.49,
+      "averageReviewScore": 4.35,
+      "revenueRank": 27
+    },
+    {
+      "sellerLabel": "Seller 28",
+      "state": "SP",
+      "revenue": 47387.4,
+      "orders": 255,
+      "averageOrderValue": 185.83,
+      "averageReviewScore": 3.93,
+      "revenueRank": 28
+    },
+    {
+      "sellerLabel": "Seller 29",
+      "state": "SP",
+      "revenue": 46368.39,
+      "orders": 380,
+      "averageOrderValue": 122.02,
+      "averageReviewScore": 3.85,
+      "revenueRank": 29
+    },
+    {
+      "sellerLabel": "Seller 30",
+      "state": "SP",
+      "revenue": 45928.26,
+      "orders": 67,
+      "averageOrderValue": 685.5,
+      "averageReviewScore": 4.13,
+      "revenueRank": 30
+    },
+    {
+      "sellerLabel": "Seller 31",
+      "state": "SP",
+      "revenue": 44553.27,
+      "orders": 345,
+      "averageOrderValue": 129.14,
+      "averageReviewScore": 4.09,
+      "revenueRank": 31
+    },
+    {
+      "sellerLabel": "Seller 32",
+      "state": "SP",
+      "revenue": 44215.17,
+      "orders": 149,
+      "averageOrderValue": 296.75,
+      "averageReviewScore": 4.19,
+      "revenueRank": 32
+    },
+    {
+      "sellerLabel": "Seller 33",
+      "state": "SP",
+      "revenue": 44212.5,
+      "orders": 38,
+      "averageOrderValue": 1163.49,
+      "averageReviewScore": 4.42,
+      "revenueRank": 33
+    },
+    {
+      "sellerLabel": "Seller 34",
+      "state": "SP",
+      "revenue": 43271.78,
+      "orders": 101,
+      "averageOrderValue": 428.43,
+      "averageReviewScore": 4.36,
+      "revenueRank": 34
+    },
+    {
+      "sellerLabel": "Seller 35",
+      "state": "SP",
+      "revenue": 42829.0,
+      "orders": 33,
+      "averageOrderValue": 1297.85,
+      "averageReviewScore": 4.03,
+      "revenueRank": 35
+    },
+    {
+      "sellerLabel": "Seller 36",
+      "state": "SP",
+      "revenue": 41495.91,
+      "orders": 184,
+      "averageOrderValue": 225.52,
+      "averageReviewScore": 4.37,
+      "revenueRank": 36
+    },
+    {
+      "sellerLabel": "Seller 37",
+      "state": "RJ",
+      "revenue": 39114.1,
+      "orders": 265,
+      "averageOrderValue": 147.6,
+      "averageReviewScore": 3.87,
+      "revenueRank": 37
+    },
+    {
+      "sellerLabel": "Seller 38",
+      "state": "SP",
+      "revenue": 38990.72,
+      "orders": 187,
+      "averageOrderValue": 208.51,
+      "averageReviewScore": 2.8,
+      "revenueRank": 38
+    },
+    {
+      "sellerLabel": "Seller 39",
+      "state": "SP",
+      "revenue": 38329.76,
+      "orders": 115,
+      "averageOrderValue": 333.3,
+      "averageReviewScore": 4.22,
+      "revenueRank": 39
+    },
+    {
+      "sellerLabel": "Seller 40",
+      "state": "PR",
+      "revenue": 37067.76,
+      "orders": 109,
+      "averageOrderValue": 340.07,
+      "averageReviewScore": 3.82,
+      "revenueRank": 40
+    },
+    {
+      "sellerLabel": "Seller 41",
+      "state": "SP",
+      "revenue": 37047.5,
+      "orders": 302,
+      "averageOrderValue": 122.67,
+      "averageReviewScore": 4.24,
+      "revenueRank": 41
+    },
+    {
+      "sellerLabel": "Seller 42",
+      "state": "SP",
+      "revenue": 36569.77,
+      "orders": 277,
+      "averageOrderValue": 132.02,
+      "averageReviewScore": 4.08,
+      "revenueRank": 42
+    },
+    {
+      "sellerLabel": "Seller 43",
+      "state": "SP",
+      "revenue": 36396.56,
+      "orders": 1120,
+      "averageOrderValue": 32.5,
+      "averageReviewScore": 3.98,
+      "revenueRank": 43
+    },
+    {
+      "sellerLabel": "Seller 44",
+      "state": "PR",
+      "revenue": 36312.3,
+      "orders": 246,
+      "averageOrderValue": 147.61,
+      "averageReviewScore": 4.07,
+      "revenueRank": 44
+    },
+    {
+      "sellerLabel": "Seller 45",
+      "state": "SP",
+      "revenue": 36289.15,
+      "orders": 260,
+      "averageOrderValue": 139.57,
+      "averageReviewScore": 4.32,
+      "revenueRank": 45
+    },
+    {
+      "sellerLabel": "Seller 46",
+      "state": "MA",
+      "revenue": 36097.98,
+      "orders": 389,
+      "averageOrderValue": 92.8,
+      "averageReviewScore": 4.02,
+      "revenueRank": 46
+    },
+    {
+      "sellerLabel": "Seller 47",
+      "state": "SP",
+      "revenue": 35848.62,
+      "orders": 157,
+      "averageOrderValue": 228.34,
+      "averageReviewScore": 4.13,
+      "revenueRank": 47
+    },
+    {
+      "sellerLabel": "Seller 48",
+      "state": "SP",
+      "revenue": 35429.61,
+      "orders": 543,
+      "averageOrderValue": 65.25,
+      "averageReviewScore": 4.17,
+      "revenueRank": 48
+    },
+    {
+      "sellerLabel": "Seller 49",
+      "state": "SP",
+      "revenue": 33614.88,
+      "orders": 227,
+      "averageOrderValue": 148.08,
+      "averageReviewScore": 4.18,
+      "revenueRank": 49
+    },
+    {
+      "sellerLabel": "Seller 50",
+      "state": "SP",
+      "revenue": 33062.32,
+      "orders": 206,
+      "averageOrderValue": 160.5,
+      "averageReviewScore": 4.14,
+      "revenueRank": 50
+    }
+  ],
+  "retention": [
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 0,
+      "cohortSize": 717,
+      "activeCustomers": 717,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 1,
+      "cohortSize": 717,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.28
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 2,
+      "cohortSize": 717,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.28
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 3,
+      "cohortSize": 717,
+      "activeCustomers": 1,
+      "retentionRatePct": 0.14
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 4,
+      "cohortSize": 717,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.42
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 5,
+      "cohortSize": 717,
+      "activeCustomers": 1,
+      "retentionRatePct": 0.14
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 6,
+      "cohortSize": 717,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.42
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 7,
+      "cohortSize": 717,
+      "activeCustomers": 1,
+      "retentionRatePct": 0.14
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 8,
+      "cohortSize": 717,
+      "activeCustomers": 1,
+      "retentionRatePct": 0.14
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 10,
+      "cohortSize": 717,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.42
+    },
+    {
+      "cohortMonth": "2017-01",
+      "monthNumber": 11,
+      "cohortSize": 717,
+      "activeCustomers": 1,
+      "retentionRatePct": 0.14
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 0,
+      "cohortSize": 1628,
+      "activeCustomers": 1628,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 1,
+      "cohortSize": 1628,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 2,
+      "cohortSize": 1628,
+      "activeCustomers": 5,
+      "retentionRatePct": 0.31
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 3,
+      "cohortSize": 1628,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.12
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 4,
+      "cohortSize": 1628,
+      "activeCustomers": 7,
+      "retentionRatePct": 0.43
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 5,
+      "cohortSize": 1628,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.12
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 6,
+      "cohortSize": 1628,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.25
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 7,
+      "cohortSize": 1628,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 8,
+      "cohortSize": 1628,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.12
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 9,
+      "cohortSize": 1628,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 10,
+      "cohortSize": 1628,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.12
+    },
+    {
+      "cohortMonth": "2017-02",
+      "monthNumber": 11,
+      "cohortSize": 1628,
+      "activeCustomers": 5,
+      "retentionRatePct": 0.31
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 0,
+      "cohortSize": 2503,
+      "activeCustomers": 2503,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 1,
+      "cohortSize": 2503,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.44
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 2,
+      "cohortSize": 2503,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.36
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 3,
+      "cohortSize": 2503,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.4
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 4,
+      "cohortSize": 2503,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.36
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 5,
+      "cohortSize": 2503,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.16
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 6,
+      "cohortSize": 2503,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.16
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 7,
+      "cohortSize": 2503,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.32
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 8,
+      "cohortSize": 2503,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.32
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 9,
+      "cohortSize": 2503,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.08
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 10,
+      "cohortSize": 2503,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.36
+    },
+    {
+      "cohortMonth": "2017-03",
+      "monthNumber": 11,
+      "cohortSize": 2503,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.12
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 0,
+      "cohortSize": 2256,
+      "activeCustomers": 2256,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 1,
+      "cohortSize": 2256,
+      "activeCustomers": 14,
+      "retentionRatePct": 0.62
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 2,
+      "cohortSize": 2256,
+      "activeCustomers": 5,
+      "retentionRatePct": 0.22
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 3,
+      "cohortSize": 2256,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 4,
+      "cohortSize": 2256,
+      "activeCustomers": 6,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 5,
+      "cohortSize": 2256,
+      "activeCustomers": 6,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 6,
+      "cohortSize": 2256,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.35
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 7,
+      "cohortSize": 2256,
+      "activeCustomers": 7,
+      "retentionRatePct": 0.31
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 8,
+      "cohortSize": 2256,
+      "activeCustomers": 7,
+      "retentionRatePct": 0.31
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 9,
+      "cohortSize": 2256,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 10,
+      "cohortSize": 2256,
+      "activeCustomers": 6,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-04",
+      "monthNumber": 11,
+      "cohortSize": 2256,
+      "activeCustomers": 2,
+      "retentionRatePct": 0.09
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 0,
+      "cohortSize": 3451,
+      "activeCustomers": 3451,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 1,
+      "cohortSize": 3451,
+      "activeCustomers": 16,
+      "retentionRatePct": 0.46
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 2,
+      "cohortSize": 3451,
+      "activeCustomers": 16,
+      "retentionRatePct": 0.46
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 3,
+      "cohortSize": 3451,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.29
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 4,
+      "cohortSize": 3451,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.29
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 5,
+      "cohortSize": 3451,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.32
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 6,
+      "cohortSize": 3451,
+      "activeCustomers": 14,
+      "retentionRatePct": 0.41
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 7,
+      "cohortSize": 3451,
+      "activeCustomers": 5,
+      "retentionRatePct": 0.14
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 8,
+      "cohortSize": 3451,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.26
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 9,
+      "cohortSize": 3451,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.26
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 10,
+      "cohortSize": 3451,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.26
+    },
+    {
+      "cohortMonth": "2017-05",
+      "monthNumber": 11,
+      "cohortSize": 3451,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.35
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 0,
+      "cohortSize": 3037,
+      "activeCustomers": 3037,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 1,
+      "cohortSize": 3037,
+      "activeCustomers": 15,
+      "retentionRatePct": 0.49
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 2,
+      "cohortSize": 3037,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.4
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 3,
+      "cohortSize": 3037,
+      "activeCustomers": 13,
+      "retentionRatePct": 0.43
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 4,
+      "cohortSize": 3037,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.3
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 5,
+      "cohortSize": 3037,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.4
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 6,
+      "cohortSize": 3037,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.36
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 7,
+      "cohortSize": 3037,
+      "activeCustomers": 7,
+      "retentionRatePct": 0.23
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 8,
+      "cohortSize": 3037,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.13
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 9,
+      "cohortSize": 3037,
+      "activeCustomers": 6,
+      "retentionRatePct": 0.2
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 10,
+      "cohortSize": 3037,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.3
+    },
+    {
+      "cohortMonth": "2017-06",
+      "monthNumber": 11,
+      "cohortSize": 3037,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.36
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 0,
+      "cohortSize": 3752,
+      "activeCustomers": 3752,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 1,
+      "cohortSize": 3752,
+      "activeCustomers": 20,
+      "retentionRatePct": 0.53
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 2,
+      "cohortSize": 3752,
+      "activeCustomers": 13,
+      "retentionRatePct": 0.35
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 3,
+      "cohortSize": 3752,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.24
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 4,
+      "cohortSize": 3752,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.29
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 5,
+      "cohortSize": 3752,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 6,
+      "cohortSize": 3752,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.32
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 7,
+      "cohortSize": 3752,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.11
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 8,
+      "cohortSize": 3752,
+      "activeCustomers": 7,
+      "retentionRatePct": 0.19
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 9,
+      "cohortSize": 3752,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 10,
+      "cohortSize": 3752,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2017-07",
+      "monthNumber": 11,
+      "cohortSize": 3752,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.29
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 0,
+      "cohortSize": 4057,
+      "activeCustomers": 4057,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 1,
+      "cohortSize": 4057,
+      "activeCustomers": 28,
+      "retentionRatePct": 0.69
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 2,
+      "cohortSize": 4057,
+      "activeCustomers": 14,
+      "retentionRatePct": 0.35
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 3,
+      "cohortSize": 4057,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 4,
+      "cohortSize": 4057,
+      "activeCustomers": 14,
+      "retentionRatePct": 0.35
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 5,
+      "cohortSize": 4057,
+      "activeCustomers": 21,
+      "retentionRatePct": 0.52
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 6,
+      "cohortSize": 4057,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.3
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 7,
+      "cohortSize": 4057,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 8,
+      "cohortSize": 4057,
+      "activeCustomers": 6,
+      "retentionRatePct": 0.15
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 9,
+      "cohortSize": 4057,
+      "activeCustomers": 6,
+      "retentionRatePct": 0.15
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 10,
+      "cohortSize": 4057,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.25
+    },
+    {
+      "cohortMonth": "2017-08",
+      "monthNumber": 11,
+      "cohortSize": 4057,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.2
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 0,
+      "cohortSize": 4004,
+      "activeCustomers": 4004,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 1,
+      "cohortSize": 4004,
+      "activeCustomers": 28,
+      "retentionRatePct": 0.7
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 2,
+      "cohortSize": 4004,
+      "activeCustomers": 22,
+      "retentionRatePct": 0.55
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 3,
+      "cohortSize": 4004,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 4,
+      "cohortSize": 4004,
+      "activeCustomers": 18,
+      "retentionRatePct": 0.45
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 5,
+      "cohortSize": 4004,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.22
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 6,
+      "cohortSize": 4004,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.22
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 7,
+      "cohortSize": 4004,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.25
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 8,
+      "cohortSize": 4004,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 9,
+      "cohortSize": 4004,
+      "activeCustomers": 7,
+      "retentionRatePct": 0.17
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 10,
+      "cohortSize": 4004,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.25
+    },
+    {
+      "cohortMonth": "2017-09",
+      "monthNumber": 11,
+      "cohortSize": 4004,
+      "activeCustomers": 3,
+      "retentionRatePct": 0.07
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 0,
+      "cohortSize": 4328,
+      "activeCustomers": 4328,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 1,
+      "cohortSize": 4328,
+      "activeCustomers": 31,
+      "retentionRatePct": 0.72
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 2,
+      "cohortSize": 4328,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.25
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 3,
+      "cohortSize": 4328,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.09
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 4,
+      "cohortSize": 4328,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.23
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 5,
+      "cohortSize": 4328,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 6,
+      "cohortSize": 4328,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 7,
+      "cohortSize": 4328,
+      "activeCustomers": 16,
+      "retentionRatePct": 0.37
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 8,
+      "cohortSize": 4328,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.28
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 9,
+      "cohortSize": 4328,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-10",
+      "monthNumber": 10,
+      "cohortSize": 4328,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 0,
+      "cohortSize": 7060,
+      "activeCustomers": 7060,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 1,
+      "cohortSize": 7060,
+      "activeCustomers": 40,
+      "retentionRatePct": 0.57
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 2,
+      "cohortSize": 7060,
+      "activeCustomers": 26,
+      "retentionRatePct": 0.37
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 3,
+      "cohortSize": 7060,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.17
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 4,
+      "cohortSize": 7060,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.17
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 5,
+      "cohortSize": 7060,
+      "activeCustomers": 13,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 6,
+      "cohortSize": 7060,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.11
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 7,
+      "cohortSize": 7060,
+      "activeCustomers": 13,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 8,
+      "cohortSize": 7060,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.13
+    },
+    {
+      "cohortMonth": "2017-11",
+      "monthNumber": 9,
+      "cohortSize": 7060,
+      "activeCustomers": 4,
+      "retentionRatePct": 0.06
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 0,
+      "cohortSize": 5338,
+      "activeCustomers": 5338,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 1,
+      "cohortSize": 5338,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 2,
+      "cohortSize": 5338,
+      "activeCustomers": 15,
+      "retentionRatePct": 0.28
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 3,
+      "cohortSize": 5338,
+      "activeCustomers": 18,
+      "retentionRatePct": 0.34
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 4,
+      "cohortSize": 5338,
+      "activeCustomers": 14,
+      "retentionRatePct": 0.26
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 5,
+      "cohortSize": 5338,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 6,
+      "cohortSize": 5338,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.17
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 7,
+      "cohortSize": 5338,
+      "activeCustomers": 1,
+      "retentionRatePct": 0.02
+    },
+    {
+      "cohortMonth": "2017-12",
+      "monthNumber": 8,
+      "cohortSize": 5338,
+      "activeCustomers": 10,
+      "retentionRatePct": 0.19
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 0,
+      "cohortSize": 6842,
+      "activeCustomers": 6842,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 1,
+      "cohortSize": 6842,
+      "activeCustomers": 23,
+      "retentionRatePct": 0.34
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 2,
+      "cohortSize": 6842,
+      "activeCustomers": 25,
+      "retentionRatePct": 0.37
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 3,
+      "cohortSize": 6842,
+      "activeCustomers": 20,
+      "retentionRatePct": 0.29
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 4,
+      "cohortSize": 6842,
+      "activeCustomers": 20,
+      "retentionRatePct": 0.29
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 5,
+      "cohortSize": 6842,
+      "activeCustomers": 11,
+      "retentionRatePct": 0.16
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 6,
+      "cohortSize": 6842,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2018-01",
+      "monthNumber": 7,
+      "cohortSize": 6842,
+      "activeCustomers": 16,
+      "retentionRatePct": 0.23
+    },
+    {
+      "cohortMonth": "2018-02",
+      "monthNumber": 0,
+      "cohortSize": 6288,
+      "activeCustomers": 6288,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2018-02",
+      "monthNumber": 1,
+      "cohortSize": 6288,
+      "activeCustomers": 22,
+      "retentionRatePct": 0.35
+    },
+    {
+      "cohortMonth": "2018-02",
+      "monthNumber": 2,
+      "cohortSize": 6288,
+      "activeCustomers": 25,
+      "retentionRatePct": 0.4
+    },
+    {
+      "cohortMonth": "2018-02",
+      "monthNumber": 3,
+      "cohortSize": 6288,
+      "activeCustomers": 19,
+      "retentionRatePct": 0.3
+    },
+    {
+      "cohortMonth": "2018-02",
+      "monthNumber": 4,
+      "cohortSize": 6288,
+      "activeCustomers": 16,
+      "retentionRatePct": 0.25
+    },
+    {
+      "cohortMonth": "2018-02",
+      "monthNumber": 5,
+      "cohortSize": 6288,
+      "activeCustomers": 14,
+      "retentionRatePct": 0.22
+    },
+    {
+      "cohortMonth": "2018-02",
+      "monthNumber": 6,
+      "cohortSize": 6288,
+      "activeCustomers": 13,
+      "retentionRatePct": 0.21
+    },
+    {
+      "cohortMonth": "2018-03",
+      "monthNumber": 0,
+      "cohortSize": 6774,
+      "activeCustomers": 6774,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2018-03",
+      "monthNumber": 1,
+      "cohortSize": 6774,
+      "activeCustomers": 27,
+      "retentionRatePct": 0.4
+    },
+    {
+      "cohortMonth": "2018-03",
+      "monthNumber": 2,
+      "cohortSize": 6774,
+      "activeCustomers": 20,
+      "retentionRatePct": 0.3
+    },
+    {
+      "cohortMonth": "2018-03",
+      "monthNumber": 3,
+      "cohortSize": 6774,
+      "activeCustomers": 20,
+      "retentionRatePct": 0.3
+    },
+    {
+      "cohortMonth": "2018-03",
+      "monthNumber": 4,
+      "cohortSize": 6774,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.12
+    },
+    {
+      "cohortMonth": "2018-03",
+      "monthNumber": 5,
+      "cohortSize": 6774,
+      "activeCustomers": 8,
+      "retentionRatePct": 0.12
+    },
+    {
+      "cohortMonth": "2018-04",
+      "monthNumber": 0,
+      "cohortSize": 6582,
+      "activeCustomers": 6582,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2018-04",
+      "monthNumber": 1,
+      "cohortSize": 6582,
+      "activeCustomers": 39,
+      "retentionRatePct": 0.59
+    },
+    {
+      "cohortMonth": "2018-04",
+      "monthNumber": 2,
+      "cohortSize": 6582,
+      "activeCustomers": 20,
+      "retentionRatePct": 0.3
+    },
+    {
+      "cohortMonth": "2018-04",
+      "monthNumber": 3,
+      "cohortSize": 6582,
+      "activeCustomers": 16,
+      "retentionRatePct": 0.24
+    },
+    {
+      "cohortMonth": "2018-04",
+      "monthNumber": 4,
+      "cohortSize": 6582,
+      "activeCustomers": 9,
+      "retentionRatePct": 0.14
+    },
+    {
+      "cohortMonth": "2018-05",
+      "monthNumber": 0,
+      "cohortSize": 6506,
+      "activeCustomers": 6506,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2018-05",
+      "monthNumber": 1,
+      "cohortSize": 6506,
+      "activeCustomers": 34,
+      "retentionRatePct": 0.52
+    },
+    {
+      "cohortMonth": "2018-05",
+      "monthNumber": 2,
+      "cohortSize": 6506,
+      "activeCustomers": 17,
+      "retentionRatePct": 0.26
+    },
+    {
+      "cohortMonth": "2018-05",
+      "monthNumber": 3,
+      "cohortSize": 6506,
+      "activeCustomers": 12,
+      "retentionRatePct": 0.18
+    },
+    {
+      "cohortMonth": "2018-06",
+      "monthNumber": 0,
+      "cohortSize": 5878,
+      "activeCustomers": 5878,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2018-06",
+      "monthNumber": 1,
+      "cohortSize": 5878,
+      "activeCustomers": 25,
+      "retentionRatePct": 0.43
+    },
+    {
+      "cohortMonth": "2018-06",
+      "monthNumber": 2,
+      "cohortSize": 5878,
+      "activeCustomers": 16,
+      "retentionRatePct": 0.27
+    },
+    {
+      "cohortMonth": "2018-07",
+      "monthNumber": 0,
+      "cohortSize": 5949,
+      "activeCustomers": 5949,
+      "retentionRatePct": 100.0
+    },
+    {
+      "cohortMonth": "2018-07",
+      "monthNumber": 1,
+      "cohortSize": 5949,
+      "activeCustomers": 31,
+      "retentionRatePct": 0.52
+    },
+    {
+      "cohortMonth": "2018-08",
+      "monthNumber": 0,
+      "cohortSize": 6144,
+      "activeCustomers": 6144,
+      "retentionRatePct": 100.0
+    }
+  ]
+}
