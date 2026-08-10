@@ -1,0 +1,82 @@
+name: commerceiq
+
+services:
+  postgres:
+    image: postgres:18.4-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-commerceiq}
+      POSTGRES_USER: ${POSTGRES_USER:-commerceiq_etl}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init/001_create_app_role.sh:/docker-entrypoint-initdb.d/001_create_app_role.sh:ro
+      - ./database/migrations/001_schema.sql:/docker-entrypoint-initdb.d/010_schema.sql:ro
+      - ./database/migrations/002_indexes_and_roles.sql:/docker-entrypoint-initdb.d/020_indexes_and_roles.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-commerceiq_etl} -d ${POSTGRES_DB:-commerceiq}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      APP_DATABASE_URL: postgresql://commerceiq_app:${APP_DB_PASSWORD}@postgres:5432/${POSTGRES_DB:-commerceiq}
+      CORS_ORIGINS: http://localhost:3000
+      LOG_LEVEL: INFO
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+        NEXT_PUBLIC_DATA_MODE: api
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      NEXT_PUBLIC_DATA_MODE: api
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(r=>{if(!r.ok)process.exit(1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+    restart: unless-stopped
+
+  etl:
+    build:
+      context: .
+      dockerfile: etl/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-commerceiq_etl}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-commerceiq}
+      DATA_DIR: /data/raw
+    volumes:
+      - ./data/raw:/data/raw:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles: ["tools"]
+
+volumes:
+  postgres_data:
