@@ -1,0 +1,42 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+dist/
+*.egg-info/
+
+# Node
+node_modules/
+.next/
+coverage/
+npm-debug.log*
+
+# Data and database artifacts
+data/raw/**
+data/processed/**
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.dump
+*.sql.gz
+
+# Local tooling
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# Generated screenshots
+docs/screenshots/*.png
+!docs/screenshots/.gitkeep
+!docs/screenshots/overview.png
