@@ -38,11 +38,11 @@ The product exposes only aggregate, read-only analysis of an anonymized public d
 
 The official Olist Kaggle dataset contains approximately 100,000 Brazilian marketplace orders from 2016–2018 across customers, orders, items, products, sellers, payments, reviews, and geolocation. It is real, anonymized commercial data and is licensed CC BY-NC-SA 4.0. Raw files are downloaded by the developer and never committed. The product clearly frames findings as analysis of this public sample, not Olist's complete operation.
 
-## TD-007 — PostgreSQL 18, Next.js 16 active LTS
+## TD-007 — Supported runtime lines and security patching
 
 **Status:** Accepted · **Date:** 2026-08-09
 
-PostgreSQL 18 is the current supported major with the longest support window. Next.js 16.2.11 is the active-LTS security line at the time of initialization. Runtime versions are pinned by container image or lockfile and should receive compatible security patches.
+PostgreSQL 18 is the target database major. Next.js 16.3.0, FastAPI 0.141.1, and Starlette 1.3.1 are pinned after the 2026-08-10 dependency audit. Runtime lines stay stable, while compatible security patches are applied and revalidated through tests and production builds.
 
 ## TD-008 — Static real-data snapshot for zero-cost portfolio hosting
 

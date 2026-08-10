@@ -48,9 +48,12 @@ customer_summary AS (
 SELECT
     COUNT(*)::integer AS customers,
     COUNT(*) FILTER (WHERE purchase_count > 1)::integer AS repeat_customers,
-    ROUND(
-        100.0 * COUNT(*) FILTER (WHERE purchase_count > 1) / NULLIF(COUNT(*), 0),
-        2
+    COALESCE(
+        ROUND(
+            100.0 * COUNT(*) FILTER (WHERE purchase_count > 1) / NULLIF(COUNT(*), 0),
+            2
+        ),
+        0
     ) AS repeat_customer_rate_pct,
     AVG(average_days_between_purchases)::numeric(10, 2) AS average_days_between_purchases,
     COUNT(*) FILTER (WHERE lifetime_value >= 500)::integer AS high_value_customers

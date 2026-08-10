@@ -1,5 +1,7 @@
 from uuid import UUID
 
+import pytest
+from pydantic import ValidationError
 from pytest import MonkeyPatch
 
 from app.core.config import Settings
@@ -14,6 +16,13 @@ def test_cors_origins_accepts_documented_comma_separated_environment_value(
     settings = Settings(_env_file=None)
 
     assert settings.cors_origins == ["http://localhost:3000", "https://example.test"]
+
+
+def test_cors_origins_rejects_wildcard(monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setenv("CORS_ORIGINS", "*")
+
+    with pytest.raises(ValidationError, match="must not contain a wildcard"):
+        Settings(_env_file=None)
 
 
 def test_seller_performance_serializes_database_uuid_as_a_json_string() -> None:

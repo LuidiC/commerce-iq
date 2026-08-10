@@ -10,13 +10,13 @@ This document connects each important query to a real business question. SQL sou
 
 **Concepts:** multiple CTEs, `INNER JOIN`, `EXISTS`, correlated subqueries, `COALESCE`, aggregates, `COUNT(DISTINCT)`, bound optional filters.
 
-**Logic:** `filtered_orders` establishes one row per qualifying order. `EXISTS` applies item dimensions without duplicating orders. `order_values` then aggregates matching item price at order grain. Reviews are aggregated separately so item count cannot weight the order review KPI.
+**Logic:** `filtered_orders` establishes one row per qualifying order. One correlated `EXISTS` requires the same item to satisfy seller and category when both filters are active. `order_values` then aggregates matching item price at order grain. Review rows are averaged per order before the final mean, so neither items nor duplicate review rows add weight.
 
 **Potential alternative:** one wide join followed by distinct aggregates. That is shorter but dangerous: items × reviews can multiply revenue. Explicit grains are easier to defend.
 
 **Performance:** the partial delivered-order purchase index narrows the time range; item PK and product/seller indexes support existence checks.
 
-**Expected output:** exactly one row, with numeric zeros for an empty period and no fabricated review value.
+**Expected output:** exactly one row, with numeric zeros for empty commercial metrics and `NULL` for an unavailable review average.
 
 ## Monthly revenue, MoM, cumulative total, and moving average
 
@@ -40,7 +40,7 @@ AVG(revenue) OVER (
 
 **Performance:** filtering occurs before aggregation/windowing. The window processes only monthly rows, not raw items.
 
-**Expected output:** one row per observed month, sorted ascending. The first MoM is `NULL`.
+**Expected output:** one row per calendar month in the requested period, sorted ascending. Missing months contain zero revenue/orders. The first MoM and a month following zero revenue return `NULL`.
 
 ## Category performance
 
@@ -50,7 +50,7 @@ AVG(revenue) OVER (
 
 **Concepts:** `LEFT JOIN`, `COALESCE`, `DENSE_RANK`, `SUM() OVER`, aggregate review, percentage share, pagination limit.
 
-**Logic:** English translation is preferred, then Portuguese source key, then `unknown`. A dense rank avoids gaps for equal revenue. Revenue share divides category revenue by the all-category window sum.
+**Logic:** English translation is preferred, then Portuguese source key, then `unknown`. Revenue and item count stay at item grain. Reviews are reduced to one mean per order and each order contributes once per category. A dense rank avoids gaps for equal revenue.
 
 **Alternative:** `RANK` is equally defensible when a tie should consume positions. `DENSE_RANK` better answers “which tier is this category in?”
 
@@ -104,7 +104,7 @@ AVG(revenue) OVER (
 
 **Concepts:** multi-table joins, grouped metrics, `RANK`, `NULLIF`, translated category filter.
 
-**Why `RANK`:** equal revenue should share a position and leave the following ordinal gap, matching competition ranking.
+**Why `RANK`:** equal revenue should share a position and leave the following ordinal gap, matching competition ranking. Seller reviews use the same per-order reduction as category reviews.
 
 **Privacy:** public snapshot replaces source UUIDs with stable rank labels such as `Seller 01`.
 
@@ -116,7 +116,7 @@ AVG(revenue) OVER (
 
 **Concepts:** `CASE`, interval extraction, `LEFT JOIN`, conditional correlated `EXISTS`, grouped percentage with `SUM(COUNT(*)) OVER`.
 
-**Logic:** each delivered order is classified using actual versus estimated delivery timestamp. Reviews are left-joined because delivery performance still exists when no review was submitted.
+**Logic:** each delivered order with an actual delivery timestamp is classified using actual versus estimated delivery timestamp. Reviews are averaged per order before the left join, preserving order grain for counts, shares, and score averages. Orders without reviews remain in the delivery metrics.
 
 **Interpretation:** the result is descriptive association. It cannot isolate seller, product, carrier, or expectation effects and therefore does not establish causality.
 

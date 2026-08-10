@@ -1,227 +1,105 @@
 # Study guide
 
-## 1. What the project does
+## 1. Product and metric story
 
-CommerceIQ answers commercial, customer, product, seller, retention, and delivery questions over the public Olist dataset. Its central claim is not “I made a dashboard”; it is “I can define trustworthy metrics in SQL and deliver them as maintainable software.”
+CommerceIQ answers commercial, customer, product, seller, retention, and delivery questions over the public Olist sample. Its defensible claim is not merely that it renders a dashboard: it defines metrics at explicit grains, implements them in reviewable SQL, and delivers them through a tested application.
 
-Before presenting it, be able to explain why delivered item price is the revenue basis, why order/customer/item grains differ, and why every visible comparison has limitations.
+Be ready to explain why delivered item price is the revenue basis, why freight is excluded, why order/customer/item grains differ, and why the findings are descriptive rather than current Olist business performance.
 
 ## 2. Architecture walkthrough
 
-Start at `docs/architecture.md`. Follow one request from URL filters in `frontend/src/components/filter-bar.tsx`, through `frontend/src/lib/api.ts`, FastAPI dependency validation, service orchestration, repository query loading, and the `.sql` file. Then follow the offline path from raw CSV to PostgreSQL COPY.
+Trace one filter from `frontend/src/components/filter-bar.tsx`, through `frontend/src/lib/api.ts`, FastAPI dependency validation, service orchestration, repository query loading, and the `.sql` file. Then trace the offline path from raw CSV to PostgreSQL `COPY`.
 
-The main architectural decision is a modular monolith. One product and one maintainer do not justify distributed services.
+The modular monolith is a scope decision: one product and one maintainer do not justify service discovery, queues, distributed tracing, or separate release trains.
 
-## 3. Database walkthrough
+## 3. Database and grain walkthrough
 
-Read `database/migrations/001_schema.sql` in dependency order. Focus on:
+Read `database/migrations/001_schema.sql` in foreign-key order. Know these grains without checking notes:
 
-- why `customer_id` and `customer_unique_id` both exist;
-- composite keys on items and payments;
-- fixed-precision money;
-- nullable delivery lifecycle fields;
-- checks that reject impossible or unsupported values;
-- why geolocation is reduced to ZIP-prefix centroids.
+- `customers`: one source `customer_id`, usually tied to one order; `customer_unique_id` links repeat purchases.
+- `orders`: one commercial order.
+- `order_items`: one item sequence inside an order.
+- `order_payments`: one payment sequence; never join it directly into item revenue.
+- `order_reviews`: source review/order pairs; 547 orders have multiple review rows.
+- `geolocations`: one derived ZIP-prefix centroid, not raw coordinate observations.
 
-Use the ERD in `docs/database-design.md` to narrate cardinality before discussing columns.
+## 4. Metric walkthrough
 
-## 4. ETL walkthrough
+Use `docs/metrics.md` as the contract and the SQL files as the implementation. Revenue stays at item grain. Review metrics first average review rows per order, then give each order equal weight. Category and seller averages deduplicate order/dimension pairs so multi-item orders do not receive extra review weight.
 
-The pipeline is intentionally explicit:
+MoM uses a calendar-month spine. A seller with no sales in February and sales in March must not compare March with January. Repeat status and high-value status are scoped to the selected period. Cohort retention means a purchase in an exact later month, not continuous activity.
 
-1. exact source contract validation;
-2. content fingerprint;
-3. streaming transformations;
-4. one transactional full refresh via COPY;
-5. completed/failed batch record.
+## 5. ETL walkthrough
 
-Know the difference between idempotency (“same input does not duplicate”) and incremental loading (“only new records are processed”). This pipeline provides the former, not the latter.
+The pipeline validates exact headers, fingerprints content, streams transformations, and executes one transactional full refresh through `COPY`. A completed matching fingerprint is skipped. A different input replaces the dataset atomically; an ordinary load exception rolls back and records a bounded failed batch.
 
-## 5. SQL concepts used
+The fingerprint supports idempotency and change detection, not authenticity. Fractional values in integer fields fail rather than truncate. Thirty-one geolocation rows outside the Brazil bounding box are excluded with a warning before centroids are calculated.
 
-Study `docs/sql-analysis.md` beside the actual query files. Be able to write and explain:
+## 6. Backend and API walkthrough
 
-- `LAG` for previous month and previous purchase;
-- `ROW_NUMBER` for deterministic purchase sequence;
-- `RANK` versus `DENSE_RANK`;
-- a running total with an explicit window frame;
-- cohort membership and month offset;
-- why `EXISTS` filters an order without multiplying it;
-- why aggregates must be computed at a known grain before joining.
+`app/api` owns HTTP validation, `services` owns use-case composition, and `repositories` owns fixed SQL lookup and execution. Psycopg binds every value. The pool marks each transaction read-only and applies a statement timeout. Public dates are inclusive; the service converts `end_date` to the next exclusive day.
 
-## 6. Backend walkthrough
+The API is synchronous because the workload is bounded and the code is simpler. That is not a claim that sync is universally faster. Empty valid periods return HTTP 200 with defined zeros, `null` review averages, and a zero-filled month spine.
 
-`app/api` owns HTTP validation, `services` owns use-case composition, and `repositories` owns SQL execution. The repository accepts semantic query names only. Psycopg binds all values. The database pool marks every API transaction read-only and sets a statement timeout.
+## 7. Frontend walkthrough
 
-The API is synchronous because the workload is small and database-bound. Do not claim sync is universally faster; claim it is simpler and adequate until measured concurrency requires another model.
+The UI centralizes strings, locale formatting, filters, loading/empty/error states, and data adapters. API mode requests all category rows for the product page and filter options. Static mode uses one generated aggregate file and removes controls it cannot truthfully recompute.
 
-## 7. API walkthrough
+Know why the frontend expects JSON numbers, why a previous string/number mismatch broke the retention matrix, and how the API test protects that boundary. Be able to demonstrate PT-BR and EN-US, keyboard focus, URL filters, and desktop/mobile layouts.
 
-Open `/docs` in a running stack. Test a valid overview request, an invalid state, an inverted date range, and a `limit=101`. Note where HTTP 422 comes from and why unexpected exceptions return a generic 500 body.
+## 8. Security and operations walkthrough
 
-Understand inclusive public `end_date` versus exclusive SQL bound (`end_date + 1 day`).
+Trace a malicious category value through length validation, a bound parameter, a static query path, a read-only transaction, a SELECT-only role, and a statement timeout. CORS is a browser policy, not authentication or rate limiting. Compose binds local ports to `127.0.0.1`; production TLS and throttling belong at the edge.
 
-## 8. Frontend walkthrough
+Dependency pins are not permanent safety. The 2026-08-10 audit moved Next.js to 16.3.0, Vitest to 4.1.10, FastAPI to 0.141.1, Pydantic Settings to 2.15.0, and explicitly pinned Starlette 1.3.1 after transitive advisories were found.
 
-The UI has one reusable analytical page shell and section-specific content. Messages are centralized, locale formatting uses `Intl`, and URL parameters represent live API filters. Charts have titles/context and the underlying tables/metric summaries preserve meaning.
+## 9. Test strategy walkthrough
 
-Static snapshot mode is deliberately labeled and does not display inactive filters. This is an honesty and UX decision, not a missing conditional.
+Unit tests cover contracts, transformations, filters, serialization, service comparisons, formatting, and query-string behavior. PostgreSQL integration tests reconcile category revenue with overview revenue, verify delivery order grain, exercise empty periods, and prove that MoM does not jump across missing calendar months. These tests require `TEST_DATABASE_URL`; they are skipped otherwise.
 
-## 9. Docker walkthrough
+# Interview questions (30)
 
-Compose starts PostgreSQL, runs ordered init scripts, waits for health, then starts API and UI. ETL is a tools profile so it does not reload data on every startup. Containers use non-root application users; PostgreSQL uses its official image user.
+| # | Level | Question | Why an interviewer asks | Related file / feature | Concept to master |
+|---:|---|---|---|---|---|
+| 1 | Fundamental | What business problem does CommerceIQ solve? | Tests whether the candidate can lead with value instead of tools. | `README.md`, overview | Problem framing and audience |
+| 2 | Fundamental | Why is revenue `SUM(order_items.price)` for delivered orders? | Checks metric definition and exclusions. | `docs/metrics.md`, `overview/kpis.sql` | GMV proxy, freight/fees/returns limitations |
+| 3 | Fundamental | Why are `customer_id` and `customer_unique_id` both needed? | Reveals whether source grain is understood. | `001_schema.sql`, customer queries | Entity identity and repeat linkage |
+| 4 | Fundamental | What is the grain of every fact-like table? | Incorrect grains cause the most dangerous analytical bugs. | `docs/database-design.md` | Cardinality and keys |
+| 5 | Fundamental | Why can joining items, payments, and reviews multiply money? | Tests join reasoning rather than syntax recall. | schema, `docs/sql-analysis.md` | Many-to-many multiplication |
+| 6 | Fundamental | Why use `numeric` for money? | Checks database type judgment. | `001_schema.sql` | Exact decimal arithmetic |
+| 7 | Fundamental | Why use `COPY` instead of row-by-row inserts? | Tests bulk-loading fundamentals. | `etl/load.py` | Protocol overhead, transactions, constraints |
+| 8 | Fundamental | How is the load idempotent, and how is that different from incremental loading? | Distinguishes two commonly confused guarantees. | `validation.py`, `load.py` | Fingerprints, full refresh, idempotency |
+| 9 | Fundamental | Why are SQL queries stored in `.sql` files instead of an ORM? | Tests whether the architecture supports the portfolio claim. | `repositories/analytics.py`, query tree | Visible analytical SQL and bounded abstraction |
+| 10 | Fundamental | What is the difference between snapshot and API mode? | Checks honesty about demo capabilities. | `build_demo_snapshot.py`, `frontend/src/lib/api.ts` | Deployment adapter versus live computation |
+| 11 | Intermediate | How are multiple review rows for one order handled? | Targets the corrected grain bug directly. | KPI/category/seller/delivery SQL | Per-order reduction and equal weighting |
+| 12 | Intermediate | Why must seller and category filters match the same item? | Tests subtle combined-filter semantics. | `overview/kpis.sql`, retention/delivery SQL | Correlated `EXISTS` and dimensional conjunction |
+| 13 | Intermediate | Why does monthly revenue generate a calendar spine? | Exposes whether MoM is truly month-over-month. | `sales/monthly_revenue.sql` | `generate_series`, zero months, `LAG` |
+| 14 | Intermediate | Why is MoM `NULL` after a zero-revenue month? | Checks undefined percentage handling. | `monthly_revenue.sql` | Division by zero and semantic nulls |
+| 15 | Intermediate | How do you prove category revenue is not duplicated? | Looks for reconciliation, not confidence. | `test_sql_integration.py` | Independent invariant and aggregate reconciliation |
+| 16 | Intermediate | Why use `RANK` for sellers and `DENSE_RANK` for categories? | Tests business meaning of window functions. | seller/category SQL | Competition rank versus dense tiers |
+| 17 | Intermediate | What exactly does repeat purchase rate measure? | Detects lifetime-versus-period confusion. | `purchase_behavior.sql` | Period-scoped denominator and numerator |
+| 18 | Intermediate | Is “high-value customer” a model or a rule? | Checks whether a proxy is overstated. | `docs/metrics.md` | Transparent threshold versus prediction |
+| 19 | Intermediate | What does M+n retention mean here? | Tests cohort interpretation. | `cohort_retention.sql` | Exact-month recurrence and cohort denominator |
+| 20 | Intermediate | Why is the first available purchase not necessarily lifetime acquisition? | Checks dataset-boundary awareness. | retention docs/query | Left truncation and observation windows |
+| 21 | Intermediate | Why is `end_date` inclusive in HTTP but exclusive in SQL? | Tests date-boundary correctness. | `services/analytics.py` | Half-open intervals |
+| 22 | Intermediate | Why do valid empty periods return 200 rather than 500? | Tests API semantics and failure states. | customer/KPI/month SQL, frontend empty state | Empty result versus server error |
+| 23 | Advanced | What happens if the ETL fails after `TRUNCATE`? | Probes transaction knowledge. | `etl/load.py` | Transactional DDL/DML, rollback, failed batch record |
+| 24 | Advanced | What happens if the ETL process is killed rather than raising an ordinary exception? | Tests limits of the recorded failure guarantee. | `etl/load.py` | Connection rollback and missing failure telemetry |
+| 25 | Advanced | Why are 31 geolocation rows excluded, and what bias could that create? | Tests whether cleaning choices are visible and defensible. | `transform.py`, `docs/data-pipeline.md` | Bounds validation, logging, derived centroids |
+| 26 | Advanced | Why are eight delivered orders absent from delivery status metrics? | Checks handling of real source anomalies. | `review_impact.sql`, metrics docs | Nullable facts and defined classification |
+| 27 | Advanced | Why can an index reduce buffer hits yet make one run slower? | Tests performance reasoning beyond “index = faster.” | `docs/performance.md` | Planner choice, cache, parallelism, variance |
+| 28 | Advanced | How do pool size, synchronous handlers, and statement timeout interact under concurrent dashboard requests? | Probes operational behavior. | `db/pool.py`, `frontend/src/lib/api.ts` | Concurrency, backpressure, timeouts |
+| 29 | Advanced | Why pin Starlette directly when FastAPI is the direct dependency? | Tests supply-chain and resolver awareness. | `backend/pyproject.toml` | Transitive vulnerabilities and compatible constraints |
+| 30 | Advanced | Which critical behavior is still not protected by a default unit test run? | Looks for honest test limitations. | integration marker, Docker/ETL workflow | Environment-dependent integration, atomic-load testing, browser QA |
 
-Know the difference between image build-time `NEXT_PUBLIC_*` variables and backend runtime secrets.
-
-## 10. Security walkthrough
-
-Trace the defense layers for a malicious category string: length validation → bound parameter → static SQL identifier/path → read-only database transaction → SELECT-only role → statement timeout. Explain why CORS is not an authorization control and why a public API still needs rate limiting.
-
-## 11. Testing walkthrough
-
-Tests prioritize contracts and decision logic: schema drift, numeric normalization, invalid filters, arbitrary query paths, equal previous periods, typed endpoint responses, locale formatting, and URL serialization. Integration SQL tests require PostgreSQL and should be added to CI with a service container.
-
-## 12. Deployment walkthrough
-
-Explain both modes in `docs/deployment.md`. The static mode optimizes reliability/cost but fixes filters. The full-stack mode demonstrates the actual architecture but introduces cold starts and free-tier capacity. Never claim a live URL or uptime that does not exist.
-
-# Interview questions
-
-## SQL
-
-**Question:** Why use `LEFT JOIN` for reviews in delivery analysis?
-
-**Expected answer:** Delivery facts exist even when the customer did not review. An inner join would silently remove those orders and bias order counts/timing toward reviewers.
-
-**Project:** `database/queries/delivery/review_impact.sql`
-
-**Question:** Why use `EXISTS` for category filtering in the KPI query?
-
-**Expected answer:** The KPI's first CTE needs one row per order. Joining items just to test membership would multiply orders; `EXISTS` expresses a semi-join and preserves grain.
-
-**Project:** `database/queries/overview/kpis.sql`
-
-**Question:** What is the difference between `RANK` and `DENSE_RANK` here?
-
-**Expected answer:** Both share a rank for ties; `RANK` leaves gaps and matches competition ranking for sellers, while `DENSE_RANK` keeps consecutive tiers for categories.
-
-**Project:** `database/queries/sellers/performance.sql`, `database/queries/products/category_performance.sql`
-
-**Question:** Why does the first MoM value return NULL?
-
-**Expected answer:** No prior observed period exists. Returning zero would incorrectly claim no change rather than no comparison.
-
-**Project:** `database/queries/sales/monthly_revenue.sql`
-
-## Database
-
-**Question:** Why are both customer identifiers stored?
-
-**Expected answer:** Olist's `customer_id` belongs to an order/customer record, while `customer_unique_id` connects repeat purchases. The former preserves foreign-key integrity; the latter enables behavioral analysis.
-
-**Project:** `docs/database-design.md`, `database/migrations/001_schema.sql`
-
-**Question:** Why not denormalize into one wide table?
-
-**Expected answer:** Entity grains differ and a wide table multiplies payments/reviews/items, risks incorrect sums, duplicates descriptive data, and weakens constraints. PostgreSQL can efficiently join this dataset.
-
-**Project:** `docs/database-design.md`
-
-## Python and ETL
-
-**Question:** How is the load idempotent?
-
-**Expected answer:** All source bytes produce a stable SHA-256. A completed matching batch is skipped; a different snapshot is transactionally full-refreshed, so reruns do not append duplicates.
-
-**Project:** `etl/commerceiq_etl/validation.py`, `etl/commerceiq_etl/load.py`
-
-**Question:** Why COPY instead of row-by-row inserts?
-
-**Expected answer:** COPY minimizes statement and protocol overhead for bulk immutable CSV data while still participating in the transaction and constraints.
-
-**Project:** `etl/commerceiq_etl/load.py`
-
-## FastAPI and backend
-
-**Question:** Why no ORM?
-
-**Expected answer:** The application is read-only analytics and visible SQL is a primary portfolio goal. A small repository provides query allowlisting and bound parameters without translating analytical SQL into an abstraction that obscures it.
-
-**Project:** `backend/app/repositories/analytics.py`
-
-**Question:** How is an equal previous period calculated?
-
-**Expected answer:** The service counts inclusive current-period days, ends the previous period at the current start (exclusive SQL boundary), and subtracts the same number of days.
-
-**Project:** `backend/app/services/analytics.py`
-
-## Frontend
-
-**Question:** Why centralize strings rather than place PT/EN conditionals in components?
-
-**Expected answer:** One message contract prevents scattered translation logic, makes completeness reviewable, and lets formatting depend on one locale context.
-
-**Project:** `frontend/src/i18n/messages.ts`
-
-**Question:** Why remove filters from snapshot mode?
-
-**Expected answer:** A fixed aggregate file cannot recompute arbitrary period/state/category metrics. Showing controls would be fake functionality; full filters are available only when the API is active.
-
-**Project:** `frontend/src/components/analytics-page.tsx`, `docs/technical-decisions.md`
-
-## Architecture and Docker
-
-**Question:** Why a monorepo and modular monolith?
-
-**Expected answer:** The components evolve together under one maintainer. Directory boundaries provide separation without cross-repository releases, distributed tracing, service discovery, or duplicated CI.
-
-**Project:** `docs/architecture.md`
-
-**Question:** Why is ETL a Compose profile?
-
-**Expected answer:** Starting the app should not reload an immutable dataset. Loading is an explicit operational action after the database is healthy.
-
-**Project:** `docker-compose.yml`
-
-## Security
-
-**Question:** Why does a public dashboard need a separate database role?
-
-**Expected answer:** Public does not mean trusted. A compromised API or query bug should not be able to mutate schema/data; the app role receives SELECT only and transactions are read-only.
-
-**Project:** `database/migrations/002_indexes_and_roles.sql`, `backend/app/db/pool.py`
-
-**Question:** Does CORS prevent API abuse?
-
-**Expected answer:** No. CORS controls browser-origin access, not direct HTTP clients. Validation, statement timeouts, least privilege, and edge rate limits address abuse.
-
-**Project:** `docs/security.md`
-
-## Analytics
-
-**Question:** Can the delivery query prove delays cause low reviews?
-
-**Expected answer:** No. It shows association; category, seller, product quality, carrier, and expectations may confound the result. Causal claims require a different design.
-
-**Project:** `docs/metrics.md`, `database/queries/delivery/review_impact.sql`
-
-**Question:** What does cohort retention mean here?
-
-**Expected answer:** The percentage of first-purchase-month customers with another delivered purchase in an exact later calendar month. It is not continuous activity or churn.
-
-**Project:** `database/queries/retention/cohort_retention.sql`
-
-# Things you must understand before claiming this project
+# Things you must understand before presenting this project
 
 - Every table's grain and all join cardinalities.
-- The exact revenue and AOV formulas and why payment value is different.
+- The revenue, AOV, review, repeat, delivery, and retention formulas.
+- Why review and month grains were explicitly normalized before aggregation.
 - The source period, license, anonymization, and representativeness limitations.
-- How CTEs and each window function change row grain.
-- Why item/review/payment joins can multiply money.
-- How customer_unique_id enables recurrence without being exposed.
-- Why correlation between delay and review is not causation.
-- How transaction rollback, fingerprinting, and COPY interact.
+- How transaction rollback, fingerprinting, and `COPY` interact.
 - How FastAPI validation becomes bound SQL parameters.
-- Why SELECT grants, read-only transactions, and CORS solve different problems.
+- Why SELECT grants, read-only transactions, CORS, and rate limiting solve different problems.
 - The difference between static snapshot and live API deployment.
-- Which checks were actually run and which need a PostgreSQL/Docker environment.
+- Which checks run without PostgreSQL and which require an integration environment.

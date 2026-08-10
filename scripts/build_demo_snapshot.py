@@ -44,7 +44,7 @@ def load_sources(data_dir: Path) -> dict[str, pd.DataFrame]:
     reviews = pd.read_csv(
         data_dir / "olist_order_reviews_dataset.csv",
         usecols=["order_id", "review_score"],
-    ).drop_duplicates("order_id")
+    ).groupby("order_id", as_index=False).agg(review_score=("review_score", "mean"))
 
     products = products.merge(translations, on="product_category_name", how="left")
     products["category"] = products["product_category_name_english"].fillna(
@@ -140,10 +140,16 @@ def category_performance(facts: pd.DataFrame) -> list[dict[str, Any]]:
             revenue=("price", "sum"),
             orders=("order_id", "nunique"),
             items=("order_id", "size"),
-            averageReviewScore=("review_score", "mean"),
         )
         .sort_values("revenue", ascending=False)
     )
+    category_reviews = (
+        facts[["category", "order_id", "review_score"]]
+        .drop_duplicates(["category", "order_id"])
+        .groupby("category", as_index=False)
+        .agg(averageReviewScore=("review_score", "mean"))
+    )
+    categories = categories.merge(category_reviews, on="category", how="left")
     total = categories["revenue"].sum()
     return [
         {
@@ -223,8 +229,16 @@ def seller_performance(facts: pd.DataFrame) -> list[dict[str, Any]]:
         .agg(
             revenue=("price", "sum"),
             orders=("order_id", "nunique"),
-            averageReviewScore=("review_score", "mean"),
         )
+    )
+    seller_reviews = (
+        facts[["seller_id", "order_id", "review_score"]]
+        .drop_duplicates(["seller_id", "order_id"])
+        .groupby("seller_id", as_index=False)
+        .agg(averageReviewScore=("review_score", "mean"))
+    )
+    grouped = (
+        grouped.merge(seller_reviews, on="seller_id", how="left")
         .sort_values("revenue", ascending=False)
         .head(50)
     )

@@ -49,3 +49,5 @@ Validation errors use FastAPI's structured HTTP 422 response. Unexpected failure
 ```
 
 Technical context is logged with request ID, method, path, status, and duration; stack traces are not sent to the client.
+
+Valid periods with no matching orders return HTTP 200 with zero commercial counts, `null` review averages, zero customer rates, and a zero-filled calendar-month trend. The frontend uses the order count to render its empty state.

@@ -38,7 +38,7 @@ export function RevenueChart({ data, movingAverage = false }: { data: MonthlyRev
             cursor={{ stroke: "#9b9b92", strokeDasharray: "3 3" }}
             contentStyle={{ border: "1px solid #deded8", borderRadius: 8, boxShadow: "0 10px 25px rgba(36, 36, 30, .08)" }}
             labelFormatter={(value) => formatDate(String(value), locale)}
-            formatter={(value, name) => [formatCurrency(Number(value), locale), name === "revenue" ? message.common.revenue : "3m avg"]}
+            formatter={(value, name) => [formatCurrency(Number(value), locale), name === "revenue" ? message.common.revenue : message.sales.movingAverage]}
           />
           <Area type="monotone" dataKey="revenue" stroke="#176b5b" strokeWidth={2.2} fill="url(#revenueFill)" dot={false} activeDot={{ r: 4, strokeWidth: 2, fill: "#fff" }} />
           {movingAverage && <Line type="monotone" dataKey="revenueMovingAverage3m" stroke="#c77932" strokeWidth={1.8} strokeDasharray="5 4" dot={false} />}

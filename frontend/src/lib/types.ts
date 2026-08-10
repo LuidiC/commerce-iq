@@ -1,6 +1,6 @@
 export type Metric = {
-  value: number;
-  previousValue: number;
+  value: number | null;
+  previousValue: number | null;
   changePct: number | null;
 };
 
@@ -75,6 +75,7 @@ export type AnalyticsSnapshot = {
   };
   revenueTrend: MonthlyRevenue[];
   categories: CategoryPerformance[];
+  categoryOptions: string[];
   customerBehavior: CustomerBehavior;
   deliveryImpact: DeliveryImpact[];
   sellers: SellerPerformance[];

@@ -8,8 +8,8 @@ All dates use the order purchase timestamp. `end_date` is inclusive at the HTTP 
 | Delivered orders | `COUNT(DISTINCT order_id)` | Orders with status `delivered` |
 | Average order value | item revenue / delivered orders | Filtered item revenue when category/seller filters are active |
 | Unique customers | `COUNT(DISTINCT customer_unique_id)` | Technical anonymized key, delivered orders |
-| Average review | mean order review score | 1–5; orders without a review excluded from the mean |
-| MoM growth | `(current revenue - prior revenue) / prior revenue` | `NULL` when no comparable prior month or prior revenue is zero |
+| Average review | mean of per-order review scores | Multiple review rows for one order are averaged first; orders without a review are excluded and never displayed as zero |
+| MoM growth | `(current revenue - prior calendar-month revenue) / prior calendar-month revenue` | A month spine supplies zero-revenue gaps; result is `NULL` when prior calendar-month revenue is zero |
 | Repeat customer | customer with more than one delivered order in the selected period | Period-scoped, not lifetime status |
 | Repeat purchase rate | repeat customers / customers with a delivered order | Period-scoped |
 | Days between purchases | day difference from `LAG(purchased_at)` within customer | Only subsequent purchases contribute |
@@ -29,3 +29,7 @@ The service constructs the immediately preceding period with the same number of 
 - Category accepts the source Portuguese key or English translation.
 - Seller is the anonymized seller UUID in API mode.
 - Order KPIs use `EXISTS` to identify qualifying orders; item revenue then includes only matching items for category/seller filters.
+- When seller and category are both present, the same item must satisfy both dimensions.
+- Category and seller review metrics count each order once after reducing multiple source review rows to one per-order mean.
+
+Delivery metrics exclude the eight delivered source orders whose actual delivery timestamp is missing. This preserves the source anomaly while keeping on-time/late classification defined.

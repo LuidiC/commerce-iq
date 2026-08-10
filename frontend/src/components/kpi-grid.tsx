@@ -12,7 +12,7 @@ function Kpi({ label, metric, format }: { label: string; metric: Metric; format:
   return (
     <article className="kpi-card">
       <div className="kpi-label">{label}</div>
-      <strong>{format(metric.value)}</strong>
+      <strong>{metric.value === null ? "—" : format(metric.value)}</strong>
       <div className={`kpi-change ${direction}`}>
         <span><Icon size={14} />{formatChange(metric.changePct, locale)}</span>
         <small>{message.common.previousPeriod}</small>
@@ -24,7 +24,7 @@ function Kpi({ label, metric, format }: { label: string; metric: Metric; format:
 export function KpiGrid({ kpis }: { kpis: AnalyticsSnapshot["kpis"] }) {
   const { locale, message } = useLocale();
   return (
-    <section className="kpi-grid" aria-label="Key performance indicators">
+    <section className="kpi-grid" aria-label={message.common.kpiRegion}>
       <Kpi label={message.overview.revenue} metric={kpis.revenue} format={(value) => formatCurrency(value, locale)} />
       <Kpi label={message.overview.orders} metric={kpis.orders} format={(value) => formatNumber(value, locale)} />
       <Kpi label={message.overview.aov} metric={kpis.averageOrderValue} format={(value) => formatCurrency(value, locale)} />

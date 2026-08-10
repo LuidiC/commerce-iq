@@ -44,3 +44,11 @@ def test_overview_compares_with_equal_previous_period() -> None:
     assert overview.kpis.revenue.value == Decimal("200.00")
     assert overview.kpis.revenue.previous_value == Decimal("100.00")
     assert overview.kpis.revenue.change_pct == Decimal("100.00")
+
+
+def test_review_comparison_preserves_missing_values() -> None:
+    comparison = AnalyticsService._comparison(None, None, null_as_zero=False)
+
+    assert comparison.value is None
+    assert comparison.previous_value is None
+    assert comparison.change_pct is None

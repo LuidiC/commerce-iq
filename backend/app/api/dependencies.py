@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Annotated, Literal
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import Depends, Query, Request
@@ -49,4 +49,3 @@ def get_service(request: Request) -> AnalyticsService:
 FiltersDependency = Annotated[AnalyticsFilters, Depends(get_filters)]
 ServiceDependency = Annotated[AnalyticsService, Depends(get_service)]
 LimitDependency = Annotated[int, Query(ge=1, le=100)]
-Locale = Literal["pt-BR", "en-US"]

@@ -1,3 +1,8 @@
+"use client";
+
+import { useLocale } from "@/i18n/locale-provider";
+
 export default function Loading() {
-  return <div className="route-loading" aria-label="Loading"><span /><span /><span /></div>;
+  const { message } = useLocale();
+  return <div className="route-loading" aria-label={message.common.loadingLabel}><span /><span /><span /></div>;
 }

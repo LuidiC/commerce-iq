@@ -78,13 +78,13 @@ export function FilterBar({
     <section className="filter-bar" aria-label={message.common.period}>
       <div className="filter-heading"><Filter size={15} /><span>{message.common.period}</span></div>
       <label className="date-field">
-        <span className="sr-only">Start date</span>
+        <span className="sr-only">{message.common.startDate}</span>
         <CalendarDays size={15} />
         <input type="date" min="2016-09-01" max={draft.endDate} value={draft.startDate} onChange={(event) => setDraft({ ...draft, startDate: event.target.value })} />
       </label>
       <span className="date-separator">—</span>
       <label className="date-field">
-        <span className="sr-only">End date</span>
+        <span className="sr-only">{message.common.endDate}</span>
         <input type="date" min={draft.startDate} max="2018-10-31" value={draft.endDate} onChange={(event) => setDraft({ ...draft, endDate: event.target.value })} />
       </label>
       <label className="select-field">

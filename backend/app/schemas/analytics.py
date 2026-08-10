@@ -2,16 +2,30 @@ from datetime import date
 from decimal import Decimal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    SerializerFunctionWrapHandler,
+    field_serializer,
+)
 
 
 class ApiModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    @field_serializer("*", mode="wrap", when_used="json", check_fields=False)
+    def serialize_decimal(
+        self, value: object, handler: SerializerFunctionWrapHandler
+    ) -> object:
+        if isinstance(value, Decimal):
+            return float(value)
+        return handler(value)
+
 
 class MetricDelta(ApiModel):
-    value: Decimal | int
-    previous_value: Decimal | int
+    value: Decimal | int | None
+    previous_value: Decimal | int | None
     change_pct: Decimal | None
 
 

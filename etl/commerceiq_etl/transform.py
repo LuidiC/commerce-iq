@@ -1,9 +1,12 @@
 import csv
-import math
+import logging
 from collections import Counter, defaultdict
 from collections.abc import Iterator
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger("commerceiq.etl")
 
 
 class RowTransformError(ValueError):
@@ -17,15 +20,26 @@ def nullable(value: str) -> str | None:
 
 def integer(value: str) -> int | None:
     cleaned = nullable(value)
-    return int(float(cleaned)) if cleaned is not None else None
+    if cleaned is None:
+        return None
+    try:
+        number = Decimal(cleaned)
+    except InvalidOperation as error:
+        raise RowTransformError(f"Invalid integer value: {value}") from error
+    if not number.is_finite() or number != number.to_integral_value():
+        raise RowTransformError(f"Invalid integer value: {value}")
+    return int(number)
 
 
 def decimal_number(value: str) -> str | None:
     cleaned = nullable(value)
     if cleaned is None:
         return None
-    number = float(cleaned)
-    if not math.isfinite(number):
+    try:
+        number = Decimal(cleaned)
+    except InvalidOperation as error:
+        raise RowTransformError(f"Invalid numeric value: {value}") from error
+    if not number.is_finite():
         raise RowTransformError(f"Non-finite numeric value: {value}")
     return cleaned
 
@@ -33,7 +47,7 @@ def decimal_number(value: str) -> str | None:
 def zero_as_null_decimal(value: str) -> str | None:
     """Treat Olist's zero product dimensions as unknown, not physical values."""
     cleaned = decimal_number(value)
-    if cleaned is None or float(cleaned) == 0:
+    if cleaned is None or Decimal(cleaned) == 0:
         return None
     return cleaned
 
@@ -138,12 +152,14 @@ def geolocation_rows(path: Path) -> Iterator[tuple[Any, ...]]:
     coordinate_sums: dict[int, list[float]] = defaultdict(lambda: [0.0, 0.0, 0.0])
     cities: dict[int, Counter[str]] = defaultdict(Counter)
     states: dict[int, Counter[str]] = defaultdict(Counter)
+    skipped_outside_bounds = 0
     for line_number, row in enumerate(rows(path), start=2):
         try:
             prefix = int(row["geolocation_zip_code_prefix"])
             latitude = float(row["geolocation_lat"])
             longitude = float(row["geolocation_lng"])
             if not (-34 <= latitude <= 6 and -74 <= longitude <= -28):
+                skipped_outside_bounds += 1
                 continue
             coordinate_sums[prefix][0] += latitude
             coordinate_sums[prefix][1] += longitude
@@ -152,6 +168,12 @@ def geolocation_rows(path: Path) -> Iterator[tuple[Any, ...]]:
             states[prefix][row["geolocation_state"].strip().upper()] += 1
         except (KeyError, ValueError) as error:
             raise RowTransformError(f"{path.name}:{line_number}: {error}") from error
+
+    if skipped_outside_bounds:
+        logger.warning(
+            "geolocation_rows_outside_bounds",
+            extra={"rows": skipped_outside_bounds},
+        )
 
     for prefix, (latitude_sum, longitude_sum, count) in sorted(coordinate_sums.items()):
         yield (

@@ -10,27 +10,23 @@ WITH filtered_orders AS (
       AND o.purchased_at < %(end_date)s
       AND (%(state)s::text IS NULL OR c.state = %(state)s)
       AND (
-          %(seller_id)s::uuid IS NULL
+          (%(seller_id)s::uuid IS NULL AND %(category)s::text IS NULL)
           OR EXISTS (
               SELECT 1
-              FROM order_items AS seller_item
-              WHERE seller_item.order_id = o.order_id
-                AND seller_item.seller_id = %(seller_id)s
-          )
-      )
-      AND (
-          %(category)s::text IS NULL
-          OR EXISTS (
-              SELECT 1
-              FROM order_items AS category_item
-              INNER JOIN products AS category_product
-                  ON category_product.product_id = category_item.product_id
-              LEFT JOIN product_categories AS category_translation
-                  ON category_translation.category_name = category_product.category_name
-              WHERE category_item.order_id = o.order_id
+              FROM order_items AS filtered_item
+              INNER JOIN products AS filtered_product
+                  ON filtered_product.product_id = filtered_item.product_id
+              LEFT JOIN product_categories AS filtered_translation
+                  ON filtered_translation.category_name = filtered_product.category_name
+              WHERE filtered_item.order_id = o.order_id
                 AND (
-                    category_product.category_name = %(category)s
-                    OR category_translation.category_name_english = %(category)s
+                    %(seller_id)s::uuid IS NULL
+                    OR filtered_item.seller_id = %(seller_id)s
+                )
+                AND (
+                    %(category)s::text IS NULL
+                    OR filtered_product.category_name = %(category)s
+                    OR filtered_translation.category_name_english = %(category)s
                 )
           )
       )
@@ -53,16 +49,22 @@ order_values AS (
       )
     GROUP BY filtered_orders.order_id, filtered_orders.customer_unique_id
 ),
-review_scores AS (
-    SELECT AVG(order_reviews.score)::numeric(4, 2) AS average_review_score
+order_review_scores AS (
+    SELECT
+        filtered_orders.order_id,
+        AVG(order_reviews.score) AS order_review_score
     FROM filtered_orders
     INNER JOIN order_reviews ON order_reviews.order_id = filtered_orders.order_id
+    GROUP BY filtered_orders.order_id
+),
+review_scores AS (
+    SELECT AVG(order_review_score)::numeric(4, 2) AS average_review_score
+    FROM order_review_scores
 )
 SELECT
     COALESCE(SUM(order_values.revenue), 0)::numeric(14, 2) AS revenue,
     COUNT(order_values.order_id)::integer AS orders,
     COALESCE(AVG(order_values.revenue), 0)::numeric(12, 2) AS average_order_value,
     COUNT(DISTINCT order_values.customer_unique_id)::integer AS customers,
-    COALESCE(MAX(review_scores.average_review_score), 0)::numeric(4, 2) AS average_review_score
-FROM order_values
-CROSS JOIN review_scores;
+    (SELECT average_review_score FROM review_scores) AS average_review_score
+FROM order_values;

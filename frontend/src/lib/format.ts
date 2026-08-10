@@ -24,6 +24,14 @@ export function formatNumber(value: number, locale: Locale, digits = 0): string 
   }).format(value);
 }
 
+export function formatOptionalNumber(
+  value: number | null,
+  locale: Locale,
+  digits = 0
+): string {
+  return value === null ? "—" : formatNumber(value, locale, digits);
+}
+
 export function formatDate(value: string, locale: Locale, options?: Intl.DateTimeFormatOptions): string {
   return new Intl.DateTimeFormat(locale, options ?? { month: "short", year: "numeric" }).format(
     new Date(`${value.slice(0, 10)}T12:00:00`)

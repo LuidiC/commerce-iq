@@ -6,7 +6,9 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
 WORKDIR /build
 COPY backend/pyproject.toml ./pyproject.toml
 COPY backend/app ./app
-RUN python -m venv /opt/venv && /opt/venv/bin/pip install .
+RUN python -m venv /opt/venv \
+    && /opt/venv/bin/pip install --upgrade pip==26.2.1 \
+    && /opt/venv/bin/pip install .
 
 FROM python:3.12.12-slim AS runtime
 

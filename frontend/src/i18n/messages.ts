@@ -31,7 +31,20 @@ export const messages = {
       review: "Avaliação",
       viewData: "Ver dados",
       rank: "Posição",
-      fixedSnapshot: "Recorte fixo do dataset para demonstração pública"
+      fixedSnapshot: "Recorte fixo do dataset para demonstração pública",
+      skipToContent: "Ir para o conteúdo",
+      primaryNavigation: "Navegação principal",
+      home: "Início do CommerceIQ",
+      closeMenu: "Fechar menu",
+      openMenu: "Abrir menu",
+      toggleNavigation: "Alternar navegação recolhida",
+      language: "Idioma",
+      startDate: "Data inicial",
+      endDate: "Data final",
+      loadingLabel: "Carregando",
+      kpiRegion: "Indicadores-chave de desempenho",
+      notFoundBody: "Esta análise não existe.",
+      backToOverview: "Voltar à visão geral"
     },
     overview: {
       eyebrow: "Pulso do marketplace",
@@ -52,7 +65,7 @@ export const messages = {
       repeatCustomers: "Clientes recorrentes",
       purchaseInterval: "Intervalo médio",
       days: "dias",
-      deliveryTitle: "Entrega influencia satisfação",
+      deliveryTitle: "Prazo e satisfação",
       deliveryContext: "Comparação entre pedidos no prazo e atrasados.",
       onTime: "No prazo",
       late: "Atrasados"
@@ -63,6 +76,7 @@ export const messages = {
       description: "Crescimento, sazonalidade e progressão mensal da receita entregue.",
       trendTitle: "Receita mensal e média móvel",
       trendContext: "A média de três meses suaviza variações sem esconder a série original.",
+      movingAverage: "Média de 3 meses",
       tableTitle: "Detalhe mensal",
       month: "Mês",
       mom: "Variação mensal",
@@ -104,6 +118,7 @@ export const messages = {
       description: "Percentual de clientes que voltaram a comprar após o mês de aquisição.",
       matrixTitle: "Retenção mensal por coorte",
       matrixContext: "M0 é o mês da primeira compra. Células posteriores mostram recompra, não atividade contínua.",
+      note: "M0 = 100%. Os valores seguintes representam uma compra naquele mês exato, não atividade contínua.",
       cohort: "Coorte",
       size: "Tamanho",
       month: "Mês"
@@ -151,7 +166,20 @@ export const messages = {
       review: "Review",
       viewData: "View data",
       rank: "Rank",
-      fixedSnapshot: "Fixed dataset period for the public demo"
+      fixedSnapshot: "Fixed dataset period for the public demo",
+      skipToContent: "Skip to content",
+      primaryNavigation: "Primary navigation",
+      home: "CommerceIQ home",
+      closeMenu: "Close menu",
+      openMenu: "Open menu",
+      toggleNavigation: "Toggle collapsed navigation",
+      language: "Language",
+      startDate: "Start date",
+      endDate: "End date",
+      loadingLabel: "Loading",
+      kpiRegion: "Key performance indicators",
+      notFoundBody: "This analysis does not exist.",
+      backToOverview: "Back to overview"
     },
     overview: {
       eyebrow: "Marketplace pulse",
@@ -172,7 +200,7 @@ export const messages = {
       repeatCustomers: "Repeat customers",
       purchaseInterval: "Average interval",
       days: "days",
-      deliveryTitle: "Delivery influences satisfaction",
+      deliveryTitle: "Delivery timing and satisfaction",
       deliveryContext: "Comparison between on-time and late orders.",
       onTime: "On time",
       late: "Late"
@@ -183,6 +211,7 @@ export const messages = {
       description: "Growth, seasonality, and monthly progression of delivered revenue.",
       trendTitle: "Monthly revenue and moving average",
       trendContext: "The three-month average smooths variation without hiding the original series.",
+      movingAverage: "3-month average",
       tableTitle: "Monthly detail",
       month: "Month",
       mom: "Monthly change",
@@ -224,6 +253,7 @@ export const messages = {
       description: "Percentage of customers who purchased again after their acquisition month.",
       matrixTitle: "Monthly retention by cohort",
       matrixContext: "M0 is the first purchase month. Later cells show another purchase, not continuous activity.",
+      note: "M0 = 100%. Later values represent a purchase in that exact month, not continuous activity.",
       cohort: "Cohort",
       size: "Size",
       month: "Month"

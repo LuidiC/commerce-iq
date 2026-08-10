@@ -1,4 +1,11 @@
-WITH monthly_sales AS (
+WITH month_spine AS (
+    SELECT generate_series(
+        date_trunc('month', %(start_date)s::date),
+        date_trunc('month', %(end_date)s::date - 1),
+        INTERVAL '1 month'
+    )::date AS month
+),
+monthly_sales AS (
     SELECT
         date_trunc('month', o.purchased_at)::date AS month,
         SUM(oi.price)::numeric(14, 2) AS revenue,
@@ -20,6 +27,14 @@ WITH monthly_sales AS (
       )
     GROUP BY date_trunc('month', o.purchased_at)
 ),
+complete_months AS (
+    SELECT
+        month_spine.month,
+        COALESCE(monthly_sales.revenue, 0)::numeric(14, 2) AS revenue,
+        COALESCE(monthly_sales.orders, 0)::integer AS orders
+    FROM month_spine
+    LEFT JOIN monthly_sales USING (month)
+),
 period_comparison AS (
     SELECT
         month,
@@ -31,7 +46,7 @@ period_comparison AS (
             ORDER BY month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
         ) AS revenue_moving_average_3m,
         LEAD(revenue) OVER (ORDER BY month) AS next_revenue
-    FROM monthly_sales
+    FROM complete_months
 )
 SELECT
     month,

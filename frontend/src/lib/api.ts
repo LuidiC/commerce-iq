@@ -1,16 +1,19 @@
-import type { AnalyticsFilters, AnalyticsSnapshot } from "./types";
+import type { AnalyticsFilters, AnalyticsSnapshot, Section } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
 const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE ?? "snapshot";
 export const USES_LIVE_API = DATA_MODE === "api";
 
-export function buildQuery(filters: AnalyticsFilters): string {
+export function buildQuery(
+  filters: AnalyticsFilters,
+  options: { omitCategory?: boolean } = {}
+): string {
   const params = new URLSearchParams({
     start_date: filters.startDate,
     end_date: filters.endDate
   });
   if (filters.state) params.set("state", filters.state);
-  if (filters.category) params.set("category", filters.category);
+  if (filters.category && !options.omitCategory) params.set("category", filters.category);
   return params.toString();
 }
 
@@ -27,31 +30,48 @@ function camelize(value: unknown): unknown {
   return value;
 }
 
-export async function loadAnalytics(filters: AnalyticsFilters, signal?: AbortSignal): Promise<AnalyticsSnapshot> {
+async function request(path: string, signal?: AbortSignal): Promise<unknown> {
+  const response = await fetch(path, { signal, headers: { Accept: "application/json" } });
+  if (!response.ok) throw new Error(`Analytics request failed with status ${response.status}`);
+  return camelize(await response.json());
+}
+
+export async function loadAnalytics(
+  filters: AnalyticsFilters,
+  section: Section,
+  signal?: AbortSignal
+): Promise<AnalyticsSnapshot> {
   if (!USES_LIVE_API) {
-    const response = await fetch("/data/analytics.json", { signal, headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`Analytics request failed with status ${response.status}`);
-    return camelize(await response.json()) as AnalyticsSnapshot;
+    const snapshot = await request("/data/analytics.json", signal) as Omit<AnalyticsSnapshot, "categoryOptions">;
+    return { ...snapshot, categoryOptions: snapshot.categories.map((item) => item.category) };
   }
 
   const query = buildQuery(filters);
-  const responses = await Promise.all([
-    fetch(`${API_URL}/overview?${query}`, { signal, headers: { Accept: "application/json" } }),
-    fetch(`${API_URL}/sellers?${query}&limit=50`, { signal, headers: { Accept: "application/json" } }),
-    fetch(`${API_URL}/retention?${query}`, { signal, headers: { Accept: "application/json" } })
-  ]);
-  const failed = responses.find((response) => !response.ok);
-  if (failed) throw new Error(`Analytics request failed with status ${failed.status}`);
-  const [overview, rawSellers, retention] = (await Promise.all(
-    responses.map(async (response) => camelize(await response.json()))
-  )) as [
-    Omit<AnalyticsSnapshot, "source" | "categories" | "sellers" | "retention"> & {
+  const productPromise = request(`${API_URL}/products?${query}&limit=100`, signal);
+  const optionPromise = filters.category
+    ? request(`${API_URL}/products?${buildQuery(filters, { omitCategory: true })}&limit=100`, signal)
+    : productPromise;
+  const [overview, products, options, rawSellers, retention] = await Promise.all([
+    request(`${API_URL}/overview?${query}`, signal),
+    productPromise,
+    optionPromise,
+    section === "sellers"
+      ? request(`${API_URL}/sellers?${query}&limit=50`, signal)
+      : Promise.resolve([]),
+    section === "retention"
+      ? request(`${API_URL}/retention?${query}`, signal)
+      : Promise.resolve([])
+  ]) as [
+    Omit<AnalyticsSnapshot, "source" | "categories" | "categoryOptions" | "sellers" | "retention"> & {
       topCategories: AnalyticsSnapshot["categories"];
     },
+    AnalyticsSnapshot["categories"],
+    AnalyticsSnapshot["categories"],
     Array<Omit<AnalyticsSnapshot["sellers"][number], "sellerLabel"> & { sellerId: string }>,
     AnalyticsSnapshot["retention"]
   ];
   const { topCategories, ...overviewData } = overview;
+  void topCategories;
   return {
     ...overviewData,
     source: {
@@ -60,7 +80,8 @@ export async function loadAnalytics(filters: AnalyticsFilters, signal?: AbortSig
       datasetUrl: "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
       generatedFromRawData: true
     },
-    categories: topCategories ?? [],
+    categories: products,
+    categoryOptions: options.map((item) => item.category),
     sellers: rawSellers.map((seller, index) => ({
       sellerLabel: `Seller ${String(index + 1).padStart(2, "0")}`,
       state: seller.state,

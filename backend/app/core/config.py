@@ -29,6 +29,15 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in value.split(",") if origin.strip()]
         return value
 
+    @field_validator("cors_origins")
+    @classmethod
+    def reject_open_cors(cls, value: list[str]) -> list[str]:
+        if not value:
+            raise ValueError("cors_origins must contain at least one explicit origin")
+        if "*" in value:
+            raise ValueError("cors_origins must not contain a wildcard")
+        return value
+
     @field_validator("db_pool_max_size")
     @classmethod
     def validate_pool_sizes(cls, value: int, info: object) -> int:

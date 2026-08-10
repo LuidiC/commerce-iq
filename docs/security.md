@@ -19,14 +19,14 @@
 | Secret disclosure | `.env` ignored, `.env.example` placeholders, no frontend database credentials, safe errors |
 | Database mutation through API | separate `commerceiq_app` role with SELECT only, read-only transactions |
 | Expensive queries / resource exhaustion | max range and list limit, 10s statement timeout, small connection pool, platform rate limits recommended |
-| Cross-origin abuse | explicit environment-driven CORS origins, GET-only methods, no credentials |
+| Cross-origin browser access | explicit CORS origins, wildcard rejection, GET-only methods, no credentials |
 | Re-identification | aggregate endpoints, no customer IDs/review text/exact coordinates in browser snapshot |
-| Supply-chain vulnerability | exact dependency versions and lockfile; automated dependency alerts recommended |
-| Dataset tampering/schema drift | exact header contracts, content fingerprint, database constraints, atomic load |
+| Supply-chain vulnerability | exact versions, lockfile, and local `npm audit`/`pip-audit`; automated alerts recommended |
+| Dataset schema drift / accidental change | exact headers, content fingerprint, constraints, atomic load |
 
 ## Security headers
 
-The API sends `X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referrer`. Next.js sends nosniff, a strict-origin referrer policy, and disables camera, microphone, and geolocation through Permissions Policy. TLS and rate limiting belong at the deployment edge.
+The API sends `X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referrer`. Next.js sends nosniff, a strict-origin referrer policy, and disables camera, microphone, and geolocation through Permissions Policy. TLS and rate limiting belong at the deployment edge. Compose binds published ports to `127.0.0.1` so the local stack is not exposed to the LAN by default.
 
 ## Logging
 
@@ -37,6 +37,7 @@ Logs include timestamp, severity, endpoint, request ID, response status, and dur
 - Public endpoints can still be scraped or flooded; deploy-edge throttling is required for a public full-stack instance.
 - Dependency vulnerabilities can emerge after release; lockfiles do not replace monitoring and patching.
 - Anonymous identifiers in the raw dataset are still linkable within that dataset, so raw files remain server-side.
+- A SHA-256 content fingerprint detects change but does not authenticate the Kaggle download.
 - The public dataset license and attribution conditions are operational obligations, not enforced by code.
 - A single-region free deployment can be unavailable during cold starts or provider maintenance.
 

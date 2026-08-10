@@ -55,7 +55,7 @@ def test_overview_endpoint_returns_typed_payload() -> None:
         app.dependency_overrides.clear()
 
     assert response.status_code == 200
-    assert response.json()["kpis"]["revenue"]["change_pct"] == "25"
+    assert response.json()["kpis"]["revenue"]["change_pct"] == 25
 
 
 def test_overview_endpoint_rejects_invalid_state() -> None:

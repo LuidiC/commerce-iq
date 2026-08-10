@@ -15,11 +15,11 @@ Validation failures name the file and expected/received header. Row failures inc
 ## Transform
 
 - Blank strings become `NULL`.
-- CSV integer-like floats are normalized to integers.
+- CSV integer-like values are normalized to integers; fractional values are rejected rather than truncated.
 - Non-finite numeric values are rejected.
 - States are uppercased and checked by PostgreSQL.
 - Product translation gaps fall back to the Portuguese category so referential integrity is preserved.
-- Duplicate geolocation samples become one ZIP-prefix centroid with the most common city/state.
+- Duplicate geolocation samples become one ZIP-prefix centroid with the most common city/state. Thirty-one coordinates outside the documented Brazil bounding box are excluded and reported as a warning.
 - Review text is loaded for analytical completeness but never exposed publicly.
 
 ## Load
@@ -33,6 +33,8 @@ The loader uses Psycopg's COPY row protocol and follows foreign-key order:
 5. items, payments, reviews
 
 The full refresh is one transaction. A completed identical fingerprint is skipped. A new fingerprint replaces the analytical dataset atomically. A failed transaction records a bounded error in `etl_batches` after rollback.
+
+The fingerprint identifies exact input content for idempotency and change detection. It is not a signature and does not prove that a modified dataset is authentic; provenance still depends on the documented download source.
 
 ## Operations
 

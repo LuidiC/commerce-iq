@@ -10,7 +10,7 @@ import { MetricChip } from "./metric-chip";
 import { PageHeader } from "./page-header";
 import { EmptyState, ErrorState, LoadingState } from "./states";
 import { useLocale } from "@/i18n/locale-provider";
-import { formatChange, formatCurrency, formatDate, formatNumber } from "@/lib/format";
+import { formatChange, formatCurrency, formatDate, formatNumber, formatOptionalNumber } from "@/lib/format";
 import { loadAnalytics, USES_LIVE_API } from "@/lib/api";
 import type { AnalyticsSnapshot, CohortRetention, Section } from "@/lib/types";
 
@@ -27,7 +27,7 @@ export function AnalyticsPage({ section }: { section: Section }) {
   }, []);
   useEffect(() => {
     const controller = new AbortController();
-    loadAnalytics(filters, controller.signal)
+    loadAnalytics(filters, section, controller.signal)
       .then((payload) => {
         setData(payload);
         setStatus("success");
@@ -37,14 +37,13 @@ export function AnalyticsPage({ section }: { section: Section }) {
         setStatus("error");
       });
     return () => controller.abort();
-  }, [filters, reloadKey]);
+  }, [filters, reloadKey, section]);
 
   const sectionCopy = message[section];
   if (status === "loading") return <LoadingState />;
   if (status === "error" || !data) return <ErrorState onRetry={fetchData} />;
-  if (!data.revenueTrend.length) return <EmptyState />;
+  if (Number(data.kpis.orders.value ?? 0) === 0) return <EmptyState />;
 
-  const categories = data.categories.map((item) => item.category);
   return (
     <>
       <div className="page-title-row">
@@ -52,7 +51,7 @@ export function AnalyticsPage({ section }: { section: Section }) {
         <div className="data-period"><span>{formatDate(data.periodStart, locale, { day: "2-digit", month: "short", year: "numeric" })}</span><i /> <span>{formatDate(data.periodEnd, locale, { day: "2-digit", month: "short", year: "numeric" })}</span></div>
       </div>
       {USES_LIVE_API ? (
-        <FilterBar key={JSON.stringify(filters)} filters={filters} categories={categories} onChange={(nextFilters) => { setStatus("loading"); setFilters(nextFilters); }} />
+        <FilterBar key={JSON.stringify(filters)} filters={filters} categories={data.categoryOptions} onChange={(nextFilters) => { setStatus("loading"); setFilters(nextFilters); }} />
       ) : (
         <section className="snapshot-bar"><ShieldCheck size={15} /><span>{message.common.fixedSnapshot}</span><b>{formatDate(data.periodStart, locale, { day: "2-digit", month: "2-digit", year: "numeric" })} — {formatDate(data.periodEnd, locale, { day: "2-digit", month: "2-digit", year: "numeric" })}</b></section>
       )}
@@ -95,7 +94,7 @@ function Overview({ data }: { data: AnalyticsSnapshot }) {
               <div key={item.deliveryStatus}>
                 <span className={item.deliveryStatus === "late" ? "delivery-dot late" : "delivery-dot"} />
                 <strong>{item.deliveryStatus === "late" ? message.overview.late : message.overview.onTime}</strong>
-                <b>{formatNumber(item.averageReviewScore ?? 0, locale, 2)} / 5</b>
+                <b>{item.averageReviewScore === null ? "—" : `${formatNumber(item.averageReviewScore, locale, 2)} / 5`}</b>
                 <small>{formatNumber(item.orderSharePct, locale, 1)}% {message.common.orders.toLowerCase()}</small>
               </div>
             ))}
@@ -133,6 +132,7 @@ function Sales({ data }: { data: AnalyticsSnapshot }) {
 function Customers({ data }: { data: AnalyticsSnapshot }) {
   const { locale, message } = useLocale();
   const item = data.customerBehavior;
+  const interval = item.averageDaysBetweenPurchases;
   return (
     <div className="dashboard-stack">
       <div className="metric-card-grid four">
@@ -143,8 +143,8 @@ function Customers({ data }: { data: AnalyticsSnapshot }) {
       </div>
       <div className="panel-grid split-60">
         <DataPanel title={message.customers.interval}>
-          <div className="hero-number">{formatNumber(item.averageDaysBetweenPurchases ?? 0, locale, 1)} <span>{message.overview.days}</span></div>
-          <div className="interval-scale"><span /><i style={{ left: "42%" }} /><b>0</b><b>100+</b></div>
+          <div className="hero-number">{formatOptionalNumber(interval, locale, 1)} {interval !== null && <span>{message.overview.days}</span>}</div>
+          <div className="interval-scale"><span />{interval !== null && <i style={{ left: `${Math.max(0, Math.min(100, interval))}%` }} />}<b>0</b><b>100+</b></div>
         </DataPanel>
         <aside className="insight-card"><ShieldCheck size={21} /><h2>{message.customers.noteTitle}</h2><p>{message.customers.noteBody}</p></aside>
       </div>
@@ -161,7 +161,7 @@ function Products({ data }: { data: AnalyticsSnapshot }) {
         <div className="table-scroll"><table>
           <thead><tr><th>{message.common.rank}</th><th>{message.common.category}</th><th>{message.common.revenue}</th><th>{message.products.share}</th><th>{message.common.orders}</th><th>{message.products.items}</th><th>{message.common.review}</th></tr></thead>
           <tbody>{data.categories.slice(0, 25).map((row) => <tr key={row.category}>
-            <td className="rank-cell">{String(row.revenueRank).padStart(2, "0")}</td><td><strong className="category-name">{row.category.replaceAll("_", " ")}</strong></td><td>{formatCurrency(row.revenue, locale)}</td><td><div className="share-cell"><span><i style={{ width: `${Math.min(100, row.revenueSharePct * 5)}%` }} /></span><b>{formatNumber(row.revenueSharePct, locale, 1)}%</b></div></td><td>{formatNumber(row.orders, locale)}</td><td>{formatNumber(row.items, locale)}</td><td>{formatNumber(row.averageReviewScore ?? 0, locale, 2)}</td>
+            <td className="rank-cell">{String(row.revenueRank).padStart(2, "0")}</td><td><strong className="category-name">{row.category.replaceAll("_", " ")}</strong></td><td>{formatCurrency(row.revenue, locale)}</td><td><div className="share-cell"><span><i style={{ width: `${Math.min(100, row.revenueSharePct * 5)}%` }} /></span><b>{formatNumber(row.revenueSharePct, locale, 1)}%</b></div></td><td>{formatNumber(row.orders, locale)}</td><td>{formatNumber(row.items, locale)}</td><td>{formatOptionalNumber(row.averageReviewScore, locale, 2)}</td>
           </tr>)}</tbody>
         </table></div>
       </DataPanel>
@@ -178,7 +178,7 @@ function Sellers({ data }: { data: AnalyticsSnapshot }) {
         <div className="table-scroll"><table>
           <thead><tr><th>{message.common.rank}</th><th>{message.sellers.seller}</th><th>{message.common.state}</th><th>{message.common.revenue}</th><th>{message.common.orders}</th><th>{message.sellers.aov}</th><th>{message.common.review}</th></tr></thead>
           <tbody>{data.sellers.slice(0, 25).map((row) => <tr key={row.sellerLabel}>
-            <td className="rank-cell">{String(row.revenueRank).padStart(2, "0")}</td><td><strong>{row.sellerLabel}</strong></td><td><span className="state-badge">{row.state}</span></td><td>{formatCurrency(row.revenue, locale)}</td><td>{formatNumber(row.orders, locale)}</td><td>{formatCurrency(row.averageOrderValue, locale)}</td><td>{formatNumber(row.averageReviewScore ?? 0, locale, 2)}</td>
+            <td className="rank-cell">{String(row.revenueRank).padStart(2, "0")}</td><td><strong>{row.sellerLabel}</strong></td><td><span className="state-badge">{row.state}</span></td><td>{formatCurrency(row.revenue, locale)}</td><td>{formatNumber(row.orders, locale)}</td><td>{formatCurrency(row.averageOrderValue, locale)}</td><td>{formatOptionalNumber(row.averageReviewScore, locale, 2)}</td>
           </tr>)}</tbody>
         </table></div>
       </DataPanel>
@@ -202,12 +202,12 @@ function Retention({ data }: { data: AnalyticsSnapshot }) {
             const byMonth = new Map(cells.map((cell) => [cell.monthNumber, cell]));
             return <tr key={cohort}><td><strong>{cohort}</strong></td><td>{byMonth.get(0)?.cohortSize}</td>{Array.from({ length: 12 }, (_, month) => {
               const cell = byMonth.get(month); const value = cell?.retentionRatePct;
-              return <td key={month}>{value === undefined ? <span className="cohort-na">—</span> : <span className="cohort-cell" style={{ "--intensity": Math.max(0.08, Math.min(1, value / (month === 0 ? 100 : 3))) } as React.CSSProperties}>{value.toFixed(month === 0 ? 0 : 1)}%</span>}</td>;
+               return <td key={month}>{value === undefined ? <span className="cohort-na">—</span> : <span className="cohort-cell" style={{ "--intensity": Math.max(0.08, Math.min(1, Number(value) / (month === 0 ? 100 : 3))) } as React.CSSProperties}>{Number(value).toFixed(month === 0 ? 0 : 1)}%</span>}</td>;
             })}</tr>;
           })}</tbody>
         </table></div>
       </DataPanel>
-      <aside className="insight-card horizontal"><Info size={20} /><div><h2>{message.retention.matrixContext}</h2><p>M0 = 100%. Values after acquisition are intentionally low and represent a purchase in that exact month.</p></div></aside>
+      <aside className="insight-card horizontal"><Info size={20} /><div><h2>{message.retention.matrixContext}</h2><p>{message.retention.note}</p></div></aside>
     </div>
   );
 }
@@ -219,7 +219,7 @@ function Delivery({ data }: { data: AnalyticsSnapshot }) {
       <DataPanel title={message.delivery.comparisonTitle}>
         <div className="delivery-cards">{data.deliveryImpact.map((item) => <article key={item.deliveryStatus} className={item.deliveryStatus === "late" ? "is-late" : ""}>
           <header><span className={item.deliveryStatus === "late" ? "delivery-dot late" : "delivery-dot"} /><h3>{item.deliveryStatus === "late" ? message.overview.late : message.overview.onTime}</h3><strong>{formatNumber(item.orderSharePct, locale, 1)}%</strong></header>
-          <div><MetricChip label={message.delivery.deliveryDays} value={`${formatNumber(item.averageDeliveryDays, locale, 1)} ${message.overview.days}`} /><MetricChip label={message.common.review} value={`${formatNumber(item.averageReviewScore ?? 0, locale, 2)} / 5`} /><MetricChip label={message.common.orders} value={formatNumber(item.orders, locale)} /></div>
+          <div><MetricChip label={message.delivery.deliveryDays} value={`${formatNumber(item.averageDeliveryDays, locale, 1)} ${message.overview.days}`} /><MetricChip label={message.common.review} value={item.averageReviewScore === null ? "—" : `${formatNumber(item.averageReviewScore, locale, 2)} / 5`} /><MetricChip label={message.common.orders} value={formatNumber(item.orders, locale)} /></div>
         </article>)}</div>
       </DataPanel>
       <aside className="insight-card horizontal warning"><Info size={20} /><div><h2>{message.delivery.insightTitle}</h2><p>{message.delivery.insightBody}</p></div></aside>

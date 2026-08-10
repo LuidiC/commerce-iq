@@ -30,11 +30,13 @@ class AnalyticsService:
         self._repository = repository
 
     @staticmethod
-    def _comparison(value: Any, previous: Any) -> MetricDelta:
-        current_value = value or 0
-        previous_value = previous or 0
+    def _comparison(
+        value: Any, previous: Any, *, null_as_zero: bool = True
+    ) -> MetricDelta:
+        current_value = 0 if value is None and null_as_zero else value
+        previous_value = 0 if previous is None and null_as_zero else previous
         change = None
-        if previous_value != 0:
+        if current_value is not None and previous_value not in (None, 0):
             change = (Decimal(str(current_value)) - Decimal(str(previous_value))) * Decimal(100)
             change /= Decimal(str(previous_value))
             change = change.quantize(Decimal("0.01"))
@@ -68,16 +70,17 @@ class AnalyticsService:
         previous = self._repository.fetch_one("kpis", previous_parameters)
 
         kpis = KpiSet(
-            **{
-                key: self._comparison(current.get(key), previous.get(key))
-                for key in (
-                    "revenue",
-                    "orders",
-                    "average_order_value",
-                    "customers",
-                    "average_review_score",
-                )
-            }
+            revenue=self._comparison(current.get("revenue"), previous.get("revenue")),
+            orders=self._comparison(current.get("orders"), previous.get("orders")),
+            average_order_value=self._comparison(
+                current.get("average_order_value"), previous.get("average_order_value")
+            ),
+            customers=self._comparison(current.get("customers"), previous.get("customers")),
+            average_review_score=self._comparison(
+                current.get("average_review_score"),
+                previous.get("average_review_score"),
+                null_as_zero=False,
+            ),
         )
         trends = self._repository.fetch_all("monthly_revenue", current_parameters)
         categories = self._repository.fetch_all("category_performance", current_parameters)

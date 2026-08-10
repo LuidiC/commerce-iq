@@ -9,6 +9,6 @@ RUN addgroup --system commerceiq && adduser --system --ingroup commerceiq commer
 WORKDIR /app
 COPY etl/pyproject.toml ./pyproject.toml
 COPY etl/commerceiq_etl ./commerceiq_etl
-RUN pip install .
+RUN pip install --upgrade pip==26.2.1 && pip install .
 USER commerceiq
 ENTRYPOINT ["commerceiq-etl"]

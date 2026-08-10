@@ -8,17 +8,18 @@ version = "0.1.0"
 description = "Read-only analytics API for the CommerceIQ portfolio project"
 requires-python = ">=3.12,<3.14"
 dependencies = [
-  "fastapi==0.128.0",
+  "fastapi==0.141.1",
   "psycopg[binary,pool]==3.3.2",
-  "pydantic-settings==2.12.0",
+  "pydantic-settings==2.15.0",
+  "starlette==1.3.1",
   "uvicorn[standard]==0.40.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-  "httpx==0.28.1",
+  "httpx2==2.10.0",
   "mypy==1.19.1",
-  "pytest==9.0.2",
+  "pytest==9.1.1",
   "pytest-cov==7.0.0",
   "ruff==0.14.10",
 ]
@@ -29,6 +30,9 @@ packages = ["app"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q --strict-markers"
+markers = [
+  "integration: requires TEST_DATABASE_URL pointing to a loaded CommerceIQ PostgreSQL database",
+]
 
 [tool.ruff]
 line-length = 100

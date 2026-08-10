@@ -2,7 +2,7 @@
 
 **A SQL-first e-commerce analytics product built from 100,000 real Brazilian marketplace orders.**
 
-CommerceIQ turns the public Olist dataset into a reproducible PostgreSQL analytical model, a typed FastAPI service, and a bilingual Next.js product. It is deliberately a modular monolith: the complexity lives in useful data questions, not infrastructure theatre.
+CommerceIQ turns the public Olist dataset into a reproducible PostgreSQL analytical model, a typed FastAPI service, and a bilingual Next.js product. A modular monolith keeps the data logic central without adding infrastructure the project does not need.
 
 ![CommerceIQ executive overview](docs/screenshots/overview.png)
 
@@ -20,7 +20,7 @@ The source dataset is relational but arrives as nine CSV files with entity-speci
 - Versioned `.sql` files keep the analytical logic visible and reviewable.
 - FastAPI exposes safe aggregate endpoints with bound parameters and typed responses.
 - Next.js presents seven focused analysis areas in PT-BR and EN-US.
-- A privacy-safe aggregate snapshot provides a truthful static demo without pretending that inactive filters work.
+- A privacy-safe aggregate snapshot provides a fixed-period static demo with inactive filters removed.
 
 ## Key features
 
@@ -30,7 +30,7 @@ The source dataset is relational but arrives as nine CSV files with entity-speci
 - Repeat-customer rate, purchase sequence, and days between purchases
 - Monthly cohort retention matrix
 - Delivery timeliness and review-score comparison
-- Period, customer-state, category, and seller filters in API mode
+- Period, customer-state, and full category filters in the dashboard; seller filtering in the API
 - Locale-aware BRL, dates, and numbers in PT-BR and EN-US
 - Loading, empty, and safe error states
 - Responsive, keyboard-accessible interface and contextual chart descriptions
@@ -104,6 +104,9 @@ docker compose up --build -d
 docker compose --profile tools run --rm etl
 ```
 
+If host port `5432` is already in use, set `POSTGRES_HOST_PORT` in `.env` to a
+free local port. Container-to-container database traffic remains on `5432`.
+
 - Dashboard: `http://localhost:3000`
 - API documentation: `http://localhost:8000/docs`
 - API health: `http://localhost:8000/api/v1/health`
@@ -118,7 +121,7 @@ cd ../etl && pytest
 cd ../frontend && npm test && npm run lint && npm run build
 ```
 
-Focused tests protect source contracts, transformations, filter validation, SQL path safety, service comparisons, API response shape, locale formatting, and URL query serialization. Coverage is intentionally behavioral, not a pursuit of an artificial percentage.
+Focused tests protect source contracts, transformations, filter validation, SQL path safety, service comparisons, API response shape, locale formatting, and URL query serialization. PostgreSQL-backed integration tests additionally reconcile category revenue, delivery order grain, empty periods, and calendar-month gaps when `TEST_DATABASE_URL` is configured.
 
 ## Security and privacy
 
