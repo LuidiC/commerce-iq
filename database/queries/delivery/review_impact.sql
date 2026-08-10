@@ -17,9 +17,9 @@ WITH delivered_orders AS (
       AND o.delivered_to_customer_at IS NOT NULL
       AND o.purchased_at >= %(start_date)s
       AND o.purchased_at < %(end_date)s
-      AND (%(state)s IS NULL OR c.state = %(state)s)
+      AND (%(state)s::text IS NULL OR c.state = %(state)s)
       AND (
-          %(seller_id)s IS NULL
+          %(seller_id)s::uuid IS NULL
           OR EXISTS (
               SELECT 1
               FROM order_items AS seller_item
@@ -28,7 +28,7 @@ WITH delivered_orders AS (
           )
       )
       AND (
-          %(category)s IS NULL
+          %(category)s::text IS NULL
           OR EXISTS (
               SELECT 1
               FROM order_items AS category_item

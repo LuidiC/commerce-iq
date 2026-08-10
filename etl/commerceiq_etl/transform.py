@@ -30,6 +30,14 @@ def decimal_number(value: str) -> str | None:
     return cleaned
 
 
+def zero_as_null_decimal(value: str) -> str | None:
+    """Treat Olist's zero product dimensions as unknown, not physical values."""
+    cleaned = decimal_number(value)
+    if cleaned is None or float(cleaned) == 0:
+        return None
+    return cleaned
+
+
 def rows(path: Path) -> Iterator[dict[str, str]]:
     with path.open(encoding="utf-8-sig", newline="") as source:
         yield from csv.DictReader(source)
@@ -60,10 +68,10 @@ def transformed_rows(entity: str, path: Path) -> Iterator[tuple[Any, ...]]:
                     integer(row["product_name_lenght"]),
                     integer(row["product_description_lenght"]),
                     integer(row["product_photos_qty"]),
-                    decimal_number(row["product_weight_g"]),
-                    decimal_number(row["product_length_cm"]),
-                    decimal_number(row["product_height_cm"]),
-                    decimal_number(row["product_width_cm"]),
+                    zero_as_null_decimal(row["product_weight_g"]),
+                    zero_as_null_decimal(row["product_length_cm"]),
+                    zero_as_null_decimal(row["product_height_cm"]),
+                    zero_as_null_decimal(row["product_width_cm"]),
                 )
             elif entity == "orders":
                 yield (

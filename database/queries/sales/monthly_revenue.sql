@@ -11,10 +11,10 @@ WITH monthly_sales AS (
     WHERE o.status = 'delivered'
       AND o.purchased_at >= %(start_date)s
       AND o.purchased_at < %(end_date)s
-      AND (%(state)s IS NULL OR c.state = %(state)s)
-      AND (%(seller_id)s IS NULL OR oi.seller_id = %(seller_id)s)
+      AND (%(state)s::text IS NULL OR c.state = %(state)s)
+      AND (%(seller_id)s::uuid IS NULL OR oi.seller_id = %(seller_id)s)
       AND (
-          %(category)s IS NULL
+          %(category)s::text IS NULL
           OR p.category_name = %(category)s
           OR pc.category_name_english = %(category)s
       )

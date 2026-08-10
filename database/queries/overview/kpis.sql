@@ -8,9 +8,9 @@ WITH filtered_orders AS (
     WHERE o.status = 'delivered'
       AND o.purchased_at >= %(start_date)s
       AND o.purchased_at < %(end_date)s
-      AND (%(state)s IS NULL OR c.state = %(state)s)
+      AND (%(state)s::text IS NULL OR c.state = %(state)s)
       AND (
-          %(seller_id)s IS NULL
+          %(seller_id)s::uuid IS NULL
           OR EXISTS (
               SELECT 1
               FROM order_items AS seller_item
@@ -19,7 +19,7 @@ WITH filtered_orders AS (
           )
       )
       AND (
-          %(category)s IS NULL
+          %(category)s::text IS NULL
           OR EXISTS (
               SELECT 1
               FROM order_items AS category_item
@@ -45,9 +45,9 @@ order_values AS (
     INNER JOIN products ON products.product_id = order_items.product_id
     LEFT JOIN product_categories
         ON product_categories.category_name = products.category_name
-    WHERE (%(seller_id)s IS NULL OR order_items.seller_id = %(seller_id)s)
+    WHERE (%(seller_id)s::uuid IS NULL OR order_items.seller_id = %(seller_id)s)
       AND (
-          %(category)s IS NULL
+          %(category)s::text IS NULL
           OR products.category_name = %(category)s
           OR product_categories.category_name_english = %(category)s
       )

@@ -20,11 +20,11 @@ The item primary key already indexes `(order_id, item_number)`, so an additional
 
 ## Reproducible EXPLAIN procedure
 
-`database/queries/performance/category_revenue_explain.sql` contains the exact target statement.
+`database/queries/performance/category_revenue_explain.sql` contains the exact target statement. From PowerShell, pass it to the PostgreSQL container without copying application files into it:
 
-```bash
-docker compose exec postgres psql -U commerceiq_etl -d commerceiq \
-  -f /workspace/database/queries/performance/category_revenue_explain.sql
+```powershell
+Get-Content database/queries/performance/category_revenue_explain.sql -Raw |
+  docker compose exec -T postgres psql -U commerceiq_etl -d commerceiq
 ```
 
 For a clean before/after comparison in a disposable database:
@@ -42,9 +42,20 @@ For a clean before/after comparison in a disposable database:
 - Item/product joins may use hash joins because a large portion of items contributes to the category aggregation.
 - Row estimate errors indicate stale statistics or correlated columns, not automatically a missing index.
 
-## Verification status
+## Measured local validation — 2026-08-10
 
-The SQL and indexes are implemented, but measured before/after execution times are deliberately not published from this workspace because PostgreSQL/Docker is unavailable here. Inventing plan numbers would be misleading. Run the procedure above in the Compose environment and commit the actual plan files if performance evidence is needed for an interview.
+Environment: Docker Desktop 4.86.0, Docker Engine 29.7.2, Docker Compose 5.3.1, PostgreSQL 18.4-alpine. The database contained the completed Olist load with 99,441 orders and 112,650 order items. Before measuring, `ANALYZE orders; ANALYZE order_items; ANALYZE products;` was executed.
+
+The category-revenue statement was measured twice on the same running database. The baseline used `BEGIN; DROP INDEX idx_orders_purchased_delivered; EXPLAIN (ANALYZE, BUFFERS); ROLLBACK;`, so the index and all data were restored automatically.
+
+| Variant | Relevant plan choice | Shared-buffer hits | Execution time |
+|---|---|---:|---:|
+| Baseline (index transactionally removed) | parallel sequential scan of `orders` | 3,787 | 37.949 ms |
+| Indexed | index-only scan on `idx_orders_purchased_delivered` | 2,619 | 40.225 ms |
+
+The indexed plan reduced observed buffer hits by 1,168 (30.8%) and avoided heap fetches for `orders`. In this single warm-cache run its elapsed time was 2.276 ms slower, which is within normal local parallel-execution variance; it must not be presented as a CPU-time speedup. The evidence supports the access-path improvement, while repeated controlled runs would be required for a latency claim.
+
+A second seller-focused `EXPLAIN (ANALYZE, BUFFERS)` filtered the top seller for the full dashboard period. It used a bitmap index scan on `idx_order_items_seller` and completed in **17.684 ms** with 2,259 shared-buffer hits. The comparison transaction was then checked: no invalid constraints were reported and `idx_orders_purchased_delivered` existed after `ROLLBACK`.
 
 ## Operational trade-off
 

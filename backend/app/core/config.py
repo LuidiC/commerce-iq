@@ -5,7 +5,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # CORS_ORIGINS is intentionally documented as a comma-separated environment
+    # variable; let the validator below normalize it instead of requiring JSON.
+    model_config = SettingsConfigDict(
+        env_file=".env", extra="ignore", enable_decoding=False
+    )
 
     app_name: str = "CommerceIQ Analytics API"
     app_version: str = "0.1.0"

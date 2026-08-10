@@ -6,9 +6,9 @@ WITH customer_months AS (
     INNER JOIN orders AS o ON o.customer_id = c.customer_id
     WHERE o.status = 'delivered'
       AND o.purchased_at < %(end_date)s
-      AND (%(state)s IS NULL OR c.state = %(state)s)
+      AND (%(state)s::text IS NULL OR c.state = %(state)s)
       AND (
-          %(seller_id)s IS NULL
+          %(seller_id)s::uuid IS NULL
           OR EXISTS (
               SELECT 1
               FROM order_items AS seller_item
@@ -17,7 +17,7 @@ WITH customer_months AS (
           )
       )
       AND (
-          %(category)s IS NULL
+          %(category)s::text IS NULL
           OR EXISTS (
               SELECT 1
               FROM order_items AS category_item
