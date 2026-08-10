@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "commerceiq-etl"
+version = "0.1.0"
+description = "Reproducible Olist-to-PostgreSQL pipeline for CommerceIQ"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "psycopg[binary]==3.3.2",
+  "pydantic-settings==2.12.0",
+]
+
+[project.scripts]
+commerceiq-etl = "commerceiq_etl.cli:main"
+
+[project.optional-dependencies]
+dev = [
+  "mypy==1.19.1",
+  "pandas==3.0.1",
+  "pytest==9.0.2",
+  "ruff==0.14.10",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["commerceiq_etl"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
