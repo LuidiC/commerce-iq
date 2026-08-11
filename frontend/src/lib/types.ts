@@ -15,12 +15,20 @@ export type MonthlyRevenue = {
 
 export type CategoryPerformance = {
   category: string;
+  categoryName: string;
+  categoryNameEnglish: string;
   revenue: number;
   orders: number;
   items: number;
   averageReviewScore: number | null;
   revenueRank: number;
   revenueSharePct: number;
+};
+
+export type CategoryOption = {
+  value: string;
+  labelPt: string;
+  labelEn: string;
 };
 
 export type CustomerBehavior = {
@@ -75,7 +83,7 @@ export type AnalyticsSnapshot = {
   };
   revenueTrend: MonthlyRevenue[];
   categories: CategoryPerformance[];
-  categoryOptions: string[];
+  categoryOptions: CategoryOption[];
   customerBehavior: CustomerBehavior;
   deliveryImpact: DeliveryImpact[];
   sellers: SellerPerformance[];

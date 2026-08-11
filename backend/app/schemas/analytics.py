@@ -49,6 +49,8 @@ class MonthlyRevenue(ApiModel):
 
 class CategoryPerformance(ApiModel):
     category: str
+    category_name: str
+    category_name_english: str
     revenue: Decimal
     orders: int
     items: int

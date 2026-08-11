@@ -2,6 +2,7 @@ WITH filtered_items AS (
     SELECT
         o.order_id,
         COALESCE(pc.category_name_english, p.category_name, 'unknown') AS category,
+        COALESCE(p.category_name, 'unknown') AS category_name,
         oi.price
     FROM orders AS o
     INNER JOIN customers AS c ON c.customer_id = o.customer_id
@@ -22,6 +23,7 @@ WITH filtered_items AS (
 category_sales AS (
     SELECT
         category,
+        MIN(category_name) AS category_name,
         SUM(price)::numeric(14, 2) AS revenue,
         COUNT(DISTINCT order_id)::integer AS orders,
         COUNT(*)::integer AS items
@@ -46,6 +48,8 @@ category_reviews AS (
 )
 SELECT
     category_sales.category,
+    category_sales.category_name,
+    category_sales.category AS category_name_english,
     category_sales.revenue,
     category_sales.orders,
     category_sales.items,

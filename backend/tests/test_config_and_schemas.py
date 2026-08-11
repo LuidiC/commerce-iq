@@ -5,7 +5,7 @@ from pydantic import ValidationError
 from pytest import MonkeyPatch
 
 from app.core.config import Settings
-from app.schemas.analytics import SellerPerformance
+from app.schemas.analytics import CategoryPerformance, SellerPerformance
 
 
 def test_cors_origins_accepts_documented_comma_separated_environment_value(
@@ -40,3 +40,24 @@ def test_seller_performance_serializes_database_uuid_as_a_json_string() -> None:
     )
 
     assert seller.model_dump(mode="json")["seller_id"] == str(seller_id)
+
+
+def test_category_performance_preserves_technical_and_localized_names() -> None:
+    category = CategoryPerformance.model_validate(
+        {
+            "category": "health_beauty",
+            "category_name": "beleza_saude",
+            "category_name_english": "health_beauty",
+            "revenue": "100.00",
+            "orders": 1,
+            "items": 1,
+            "average_review_score": "4.00",
+            "revenue_rank": 1,
+            "revenue_share_pct": "10.00",
+        }
+    )
+
+    payload = category.model_dump(mode="json")
+    assert payload["category"] == "health_beauty"
+    assert payload["category_name"] == "beleza_saude"
+    assert payload["category_name_english"] == "health_beauty"

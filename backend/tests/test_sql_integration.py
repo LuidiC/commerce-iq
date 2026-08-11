@@ -60,6 +60,9 @@ def test_category_revenue_reconciles_to_overview(
 
     assert len(categories) == 74
     assert sum((row["revenue"] for row in categories), Decimal(0)) == kpis["revenue"]
+    health_beauty = next(row for row in categories if row["category"] == "health_beauty")
+    assert health_beauty["category_name"] == "beleza_saude"
+    assert health_beauty["category_name_english"] == "health_beauty"
 
 
 def test_delivery_shares_use_order_grain(

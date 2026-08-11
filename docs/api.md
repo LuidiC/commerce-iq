@@ -23,7 +23,7 @@ The maximum date span is 1,100 days. Unknown fields are ignored by FastAPI's fun
 | `GET /overview` | KPIs, prior-period deltas, trend, categories, customer and delivery summary |
 | `GET /sales` | monthly revenue, MoM, cumulative revenue, moving average |
 | `GET /customers` | repeat behavior and high-value count |
-| `GET /products` | category performance ranking |
+| `GET /products` | category performance ranking, including Portuguese and English category names |
 | `GET /sellers` | anonymized seller ranking |
 | `GET /retention` | long-form cohort retention cells |
 | `GET /delivery` | on-time/late delivery comparison |
@@ -34,6 +34,9 @@ Example:
 GET /api/v1/products?start_date=2018-01-01&end_date=2018-06-30&state=SP&limit=10
 Accept: application/json
 ```
+
+Each product row keeps `category` as the backward-compatible filter value and also
+returns `category_name` and `category_name_english` for locale-aware presentation.
 
 ## Error contract
 

@@ -2,8 +2,9 @@
 
 import { CalendarDays, Filter, RotateCcw } from "lucide-react";
 import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
+import { formatCategoryLabel } from "@/i18n/category-labels";
 import { useLocale } from "@/i18n/locale-provider";
-import type { AnalyticsFilters } from "@/lib/types";
+import type { AnalyticsFilters, CategoryOption } from "@/lib/types";
 
 const STATES = ["AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"];
 
@@ -59,10 +60,10 @@ export function FilterBar({
   onChange
 }: {
   filters: AnalyticsFilters;
-  categories: string[];
+  categories: CategoryOption[];
   onChange: (filters: AnalyticsFilters) => void;
 }) {
-  const { message } = useLocale();
+  const { locale, message } = useLocale();
   const [draft, setDraft] = useState(filters);
 
   const apply = () => {
@@ -98,7 +99,11 @@ export function FilterBar({
         <span className="sr-only">{message.common.category}</span>
         <select value={draft.category ?? ""} onChange={(event) => setDraft({ ...draft, category: event.target.value || undefined })}>
           <option value="">{message.common.allCategories}</option>
-          {categories.map((category) => <option key={category} value={category}>{category.replaceAll("_", " ")}</option>)}
+          {categories.map((category) => (
+            <option key={category.value} value={category.value}>
+              {formatCategoryLabel(locale === "pt-BR" ? category.labelPt : category.labelEn, locale)}
+            </option>
+          ))}
         </select>
       </label>
       <button className="button primary" onClick={apply}>{message.common.apply}</button>

@@ -1,8 +1,22 @@
-import type { AnalyticsFilters, AnalyticsSnapshot, Section } from "./types";
+import type {
+  AnalyticsFilters,
+  AnalyticsSnapshot,
+  CategoryOption,
+  CategoryPerformance,
+  Section
+} from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
 const DATA_MODE = process.env.NEXT_PUBLIC_DATA_MODE ?? "snapshot";
 export const USES_LIVE_API = DATA_MODE === "api";
+
+export function toCategoryOption(category: CategoryPerformance): CategoryOption {
+  return {
+    value: category.category,
+    labelPt: category.categoryName,
+    labelEn: category.categoryNameEnglish
+  };
+}
 
 export function buildQuery(
   filters: AnalyticsFilters,
@@ -43,7 +57,14 @@ export async function loadAnalytics(
 ): Promise<AnalyticsSnapshot> {
   if (!USES_LIVE_API) {
     const snapshot = await request("/data/analytics.json", signal) as Omit<AnalyticsSnapshot, "categoryOptions">;
-    return { ...snapshot, categoryOptions: snapshot.categories.map((item) => item.category) };
+    return {
+      ...snapshot,
+      categoryOptions: snapshot.categories.map((item) => ({
+        value: item.category,
+        labelPt: item.category,
+        labelEn: item.category
+      }))
+    };
   }
 
   const query = buildQuery(filters);
@@ -81,7 +102,7 @@ export async function loadAnalytics(
       generatedFromRawData: true
     },
     categories: products,
-    categoryOptions: options.map((item) => item.category),
+    categoryOptions: options.map(toCategoryOption),
     sellers: rawSellers.map((seller, index) => ({
       sellerLabel: `Seller ${String(index + 1).padStart(2, "0")}`,
       state: seller.state,
