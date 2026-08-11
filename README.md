@@ -8,7 +8,7 @@ CommerceIQ turns the public Olist dataset into a reproducible PostgreSQL analyti
 
 ## Live demo
 
-A public URL is not committed until a real deployment exists. The repository includes two deployment paths: a zero-cost aggregate snapshot for the visual portfolio and a full FastAPI + PostgreSQL stack. See [`docs/deployment.md`](docs/deployment.md).
+The public application is available at [commerce-iq-kappa.vercel.app](https://commerce-iq-kappa.vercel.app). It runs in API mode against the FastAPI service at [commerce-iq-api.onrender.com/api/v1](https://commerce-iq-api.onrender.com/api/v1); its health endpoint is [available here](https://commerce-iq-api.onrender.com/api/v1/health). The Render Free service can take longer to answer after inactivity. See [`docs/deployment.md`](docs/deployment.md).
 
 ## The problem
 
@@ -20,7 +20,7 @@ The source dataset is relational but arrives as nine CSV files with entity-speci
 - Versioned `.sql` files keep the analytical logic visible and reviewable.
 - FastAPI exposes safe aggregate endpoints with bound parameters and typed responses.
 - Next.js presents seven focused analysis areas in PT-BR and EN-US.
-- A privacy-safe aggregate snapshot provides a fixed-period static demo with inactive filters removed.
+- An optional privacy-safe aggregate snapshot supports static use cases without fabricating data; the public application uses the live API.
 
 ## Key features
 
@@ -31,6 +31,7 @@ The source dataset is relational but arrives as nine CSV files with entity-speci
 - Monthly cohort retention matrix
 - Delivery timeliness and review-score comparison
 - Period, customer-state, and full category filters in the dashboard; seller filtering in the API
+- Localized category labels with stable English/slug filter values, so PT-BR ↔ EN-US preserves URL selections
 - Locale-aware BRL, dates, and numbers in PT-BR and EN-US
 - Loading, empty, and safe error states
 - Responsive, keyboard-accessible interface and contextual chart descriptions
@@ -48,7 +49,7 @@ flowchart LR
     G --> F
 ```
 
-The snapshot is a hosting adapter generated from real aggregate data. The primary local architecture remains browser → FastAPI → PostgreSQL. See [`docs/architecture.md`](docs/architecture.md).
+For local development, the dashboard connects to FastAPI and PostgreSQL through Docker Compose. In production, the path is browser → Vercel (Next.js) → Render (FastAPI) → Neon (PostgreSQL); the API uses the read-only `commerceiq_app` role and a pooled database connection. The snapshot remains an optional hosting adapter generated from real aggregate data. See [`docs/architecture.md`](docs/architecture.md).
 
 ## Tech stack
 
@@ -59,7 +60,7 @@ The snapshot is a hosting adapter generated from real aggregate data. The primar
 | API | FastAPI, Pydantic, Psycopg | Typed read-only boundary while preserving raw SQL |
 | UI | Next.js 16, React 19, TypeScript | Mature routing, production build path, strict client types |
 | Charts | Recharts | Responsive React composition with deliberate visual customization |
-| Operations | Docker Compose | One reproducible local stack, health checks, least-privilege processes |
+| Operations | Docker Compose, Vercel, Render, Neon | Reproducible local stack and managed production delivery with least-privilege database access |
 
 ## Database design
 
@@ -125,7 +126,7 @@ Focused tests protect source contracts, transformations, filter validation, SQL 
 
 ## Security and privacy
 
-The public API is read-only and aggregate-only. It uses bound parameters, strict query allowlisting, input limits, statement timeouts, restrictive CORS, safe errors, and a SELECT-only database role. The public snapshot contains no customer identifiers or review text. See [`docs/security.md`](docs/security.md).
+The public API is read-only and aggregate-only. It uses bound parameters, strict query allowlisting, input limits, statement timeouts, restrictive CORS, safe errors, and the SELECT-only `commerceiq_app` database role. Optional snapshots contain no customer identifiers or review text. See [`docs/security.md`](docs/security.md).
 
 ## Dataset
 
@@ -150,7 +151,7 @@ docs/        architecture, metrics, security, performance, study guide
 - Customer “retention” means a purchase in a later calendar month; it is not subscription retention.
 - Delivery/review analysis is associative and does not prove that delay caused the score.
 - Product prices are used as gross merchandise revenue; discounts, taxes, returns, and platform fees are unavailable.
-- The static hosting mode intentionally fixes the data period. Full filters require the API mode.
+- The public application uses the live API and supports the full dashboard filters. The optional static snapshot mode intentionally fixes its data period and cannot recompute filters.
 
 ## Further reading
 

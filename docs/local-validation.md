@@ -1,6 +1,6 @@
 # Local validation evidence
 
-Validated on 2026-08-10 with Docker Desktop 4.86.0, Docker Engine 29.7.2, Docker Compose 5.3.1, and PostgreSQL 18.4-alpine. No public deployment was performed.
+Validated locally on 2026-08-10 with Docker Desktop 4.86.0, Docker Engine 29.7.2, Docker Compose 5.3.1, and PostgreSQL 18.4-alpine. This evidence covers the local stack only; the current production topology is documented in [deployment.md](deployment.md).
 
 ## Executed stack
 

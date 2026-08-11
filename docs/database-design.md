@@ -84,4 +84,4 @@ No star schema is materialized. At this dataset size PostgreSQL can join the nor
 
 ## Privacy
 
-Identifiers are technical, anonymized keys. They are required internally for joins and repeat analysis but customer identifiers, review messages, and exact coordinates are not exposed through public endpoints or the static snapshot.
+Identifiers are technical, anonymized keys. They are required internally for joins and repeat analysis but customer identifiers, review messages, and exact coordinates are not exposed through public endpoints or an optional static snapshot.

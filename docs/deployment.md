@@ -1,82 +1,47 @@
 # Deployment
 
-Research date: **2026-08-10**. Provider limits change; re-check the linked official pages before creating resources.
+## Current production topology
 
-## Recommended portfolio deployment
-
-| Layer | Provider | Plan | Important limit |
+| Layer | Provider | Public address / role | Operational note |
 |---|---|---|---|
-| Frontend | Vercel | Hobby, $0 for personal non-commercial work | usage quotas; Hobby is restricted to personal/non-commercial use |
-| API | Render | Free web service | spins down after 15 minutes; cold start can take about one minute |
-| PostgreSQL | Neon | Free | 0.5 GB storage, 100 CU-hours/month/project, scales to zero after inactivity |
+| Frontend | Vercel / Next.js | [commerce-iq-kappa.vercel.app](https://commerce-iq-kappa.vercel.app) | Uses live API mode. |
+| API | Render / FastAPI | [commerce-iq-api.onrender.com/api/v1](https://commerce-iq-api.onrender.com/api/v1) | Health endpoint: `/api/v1/health`. |
+| Database | Neon / PostgreSQL | Private application database | API uses a pooled connection and the read-only `commerceiq_app` role. |
 
-Official sources: [Vercel Hobby](https://vercel.com/docs/plans/hobby), [Render free services](https://render.com/docs/free), [Neon pricing](https://neon.com/pricing).
-
-This combination is appropriate for a low-traffic portfolio. It is not a production SLA. Render's free PostgreSQL is not recommended because the current free database expires after 30 days; Neon has no stated time limit on the free tier at the research date.
-
-## Path A — zero-cost visual demo
-
-This is the lowest-maintenance option and has no cold-start dependency.
-
-1. Download the dataset locally.
-2. Install snapshot tooling with `pip install -e "etl[dev]"`.
-3. Run `python scripts/build_demo_snapshot.py`.
-4. Set `NEXT_PUBLIC_DATA_MODE=snapshot` in the frontend deployment.
-5. Import the repository in Vercel with root directory `frontend`.
-6. Build command: `npm run build`; output is handled by Next.js.
-
-The UI labels the data as a fixed public-demo period and removes active filters. The snapshot contains only aggregate metrics and anonymized seller rank labels.
-
-## Path B — full stack
-
-### Neon database
-
-1. Create a free Postgres project in a nearby region.
-2. Run both migration files as the owner.
-3. Create `commerceiq_app` with a generated password and grant only CONNECT, schema USAGE, and SELECT.
-4. Run ETL once with the owner/ETL connection string.
-5. Use Neon's pooled connection string for the API and set a statement timeout.
-
-Confirm total relation size remains under the free 0.5 GB allowance:
-
-```sql
-SELECT pg_size_pretty(pg_database_size(current_database()));
+```mermaid
+flowchart LR
+    Browser --> Vercel["Vercel / Next.js"]
+    Vercel -->|HTTPS| Render["Render / FastAPI"]
+    Render -->|"Pooled PostgreSQL connection; read-only commerceiq_app"| Neon["Neon / PostgreSQL"]
 ```
 
-### Render API
+The public frontend is configured with `NEXT_PUBLIC_DATA_MODE=api` and a Render API base URL. It does not use the aggregate snapshot as its primary public data source.
 
-- Service type: Web Service, Free
-- Root directory: repository root
-- Runtime: Docker
-- Dockerfile: `backend/Dockerfile`
-- Health check: `/api/v1/health`
-- Environment: `APP_DATABASE_URL`, `CORS_ORIGINS=https://<frontend-domain>`, `LOG_LEVEL=INFO`
+## Environment configuration
 
-The backend image expects `database/queries` at build time, so the Docker build context must remain the repository root.
+Set environment variables in the respective provider settings; do not commit their values or put connection strings in documentation.
 
-### Vercel frontend
+| Service | Variables | Notes |
+|---|---|---|
+| Vercel frontend | `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_DATA_MODE` | `NEXT_PUBLIC_*` values are embedded during the Next.js build, so a redeploy is required after changing them. |
+| Render API | `APP_DATABASE_URL`, `CORS_ORIGINS`, `LOG_LEVEL` | `APP_DATABASE_URL` is the Neon pooled application connection. `CORS_ORIGINS` includes the stable Vercel origin only; it must not use a wildcard. |
 
-- Root directory: `frontend`
-- `NEXT_PUBLIC_DATA_MODE=api`
-- `NEXT_PUBLIC_API_URL=https://<render-service>/api/v1`
+The API service receives no owner or ETL credential. It uses the runtime `commerceiq_app` role, which is granted database `CONNECT`, schema `USAGE`, and table `SELECT`; application transactions are also set read-only.
 
-Redeploy the frontend after changing a `NEXT_PUBLIC_*` value because it is embedded at build time.
+## CORS and browser access
 
-## Cold-start UX
+The FastAPI service allows explicit origins only, permits `GET`, does not accept credentials, and permits only the documented request headers. Production CORS includes `https://commerce-iq-kappa.vercel.app`, allowing the Vercel frontend to call the Render API while rejecting arbitrary browser origins. CORS is not authentication or request-rate protection.
 
-Render documents an idle spin-down after 15 minutes and a wake-up around one minute. The frontend's loading state must remain visible and the fetch should be retried by the user rather than silently switching to stale or fabricated values. A paid always-on API is the clean upgrade if recruiter demo reliability becomes more important than zero cost.
+## Render Free cold starts
 
-## Cost and safety controls
+The Render service uses the Free plan and may spin down after inactivity. The first request after a spin-down can take longer while the service starts; the frontend keeps its loading state and exposes a retryable error rather than replacing live data with a stale snapshot. This deployment is suitable for a portfolio, not a production SLA.
 
-- Do not add a payment method unless spend limits/alerts are configured.
-- Restrict CORS to the actual frontend domain.
-- Keep owner/ETL credentials out of the API service.
-- Store secrets only in provider environment settings.
-- Run a secret scan on Git history before pushing.
-- Attribute the Olist dataset and preserve CC BY-NC-SA obligations.
+## Provisioning and operational boundaries
 
-## Not selected
+Database migrations and the ETL use an appropriate administrative/provisioning role. That role is separate from the API runtime role and must not be configured on Render. The backend Docker build context remains the repository root because `backend/Dockerfile` copies `database/queries` into the image.
 
-- Railway's current “Free” onboarding becomes $1/month after a 30-day/$5 trial, so it is low-cost rather than permanently free ([official pricing](https://railway.com/pricing)).
-- Render free Postgres expires after 30 days.
-- A single VPS is inexpensive but introduces patching, firewall, backup, and uptime responsibility that distracts from the portfolio goal.
+Keep secrets only in provider environment settings. Never record database URLs, passwords, tokens, or generated credentials in Git, build logs, or documentation. Preserve Olist attribution and the CC BY-NC-SA obligations.
+
+## Optional static snapshot mode
+
+`scripts/build_demo_snapshot.py` can still generate a privacy-safe aggregate JSON file for a deliberately fixed-period static deployment. It is an alternate adapter, not the production deployment. In that mode, `NEXT_PUBLIC_DATA_MODE` selects snapshot behavior and the UI removes controls it cannot recompute.

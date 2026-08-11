@@ -17,10 +17,10 @@
 | SQL injection through filters | Pydantic validation, bound Psycopg parameters, fixed query allowlist, no dynamic identifiers |
 | Arbitrary SQL/file read | repository maps semantic names to constant paths; unknown names fail closed |
 | Secret disclosure | `.env` ignored, `.env.example` placeholders, no frontend database credentials, safe errors |
-| Database mutation through API | separate `commerceiq_app` role with SELECT only, read-only transactions |
+| Database mutation through API | separate runtime `commerceiq_app` role with minimum privileges (CONNECT, schema USAGE, table SELECT) and read-only transactions |
 | Expensive queries / resource exhaustion | max range and list limit, 10s statement timeout, small connection pool, platform rate limits recommended |
-| Cross-origin browser access | explicit CORS origins, wildcard rejection, GET-only methods, no credentials |
-| Re-identification | aggregate endpoints, no customer IDs/review text/exact coordinates in browser snapshot |
+| Cross-origin browser access | explicit CORS origins including the stable Vercel frontend, wildcard rejection, GET-only methods, no credentials |
+| Re-identification | aggregate endpoints, no customer IDs/review text/exact coordinates in the browser or optional snapshot |
 | Supply-chain vulnerability | exact versions, lockfile, and local `npm audit`/`pip-audit`; automated alerts recommended |
 | Dataset schema drift / accidental change | exact headers, content fingerprint, constraints, atomic load |
 
@@ -31,6 +31,10 @@ The API sends `X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referre
 ## Logging
 
 Logs include timestamp, severity, endpoint, request ID, response status, and duration. They must not include database URLs, headers, review text, customer/seller UUIDs, or full SQL parameter values.
+
+## Production access boundaries
+
+The production API on Render uses the pooled Neon connection for `commerceiq_app`, never the database owner. Administrative credentials are limited to provisioning, migrations, and ETL execution. `CORS_ORIGINS` explicitly includes `https://commerce-iq-kappa.vercel.app`; it is not a wildcard and does not make the API authenticated or rate-limited.
 
 ## Residual risks
 
@@ -47,4 +51,4 @@ Logs include timestamp, severity, endpoint, request ID, response status, and dur
 - Rotate any credential ever pasted into a remote build log.
 - Restrict database network access to the backend provider where available.
 - Configure spend/rate limits before publishing the API.
-- Review CORS and `NEXT_PUBLIC_API_URL` for the actual production domains.
+- Review CORS and `NEXT_PUBLIC_API_URL` whenever the production frontend or API domain changes.

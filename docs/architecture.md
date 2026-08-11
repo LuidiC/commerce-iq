@@ -18,7 +18,7 @@ flowchart TB
       API["FastAPI /api/v1"]
       UI["Next.js App Router"]
     end
-    subgraph Deployment adapters
+    subgraph Optional deployment adapter
       SNAP["Privacy-safe aggregate JSON"]
     end
     CSV --> ETL --> PG --> SQL --> API --> UI
@@ -34,6 +34,17 @@ flowchart TB
 5. The API selects a query from a fixed allowlist, passes bound filters, validates rows into Pydantic schemas, and returns aggregate JSON.
 6. The UI centralizes filters, formatting, remote states, and translations. It never receives raw customer identifiers.
 
+## Production deployment
+
+```mermaid
+flowchart LR
+    B["Browser"] --> V["Vercel\nNext.js frontend"]
+    V -->|"HTTPS API requests"| R["Render\nFastAPI"]
+    R -->|"Pooled PostgreSQL connection\nread-only commerceiq_app role"| N[("Neon\nPostgreSQL")]
+```
+
+Vercel serves the public Next.js application. Its API-mode frontend calls the Render service, which exposes the versioned FastAPI endpoints and connects to Neon with the minimum-privilege `commerceiq_app` role. Migrations and ETL run with a separate administrative role; they are not application-runtime responsibilities. The optional aggregate snapshot is not part of this production request path.
+
 ## Responsibilities and dependencies
 
 | Component | Owns | May depend on | Must not own |
@@ -48,8 +59,8 @@ flowchart TB
 - **Synchronous API:** the portfolio workload is bounded and read-only. A small synchronous connection pool is easier to operate than mixed async code and is sufficient until measurement says otherwise.
 - **No ORM:** CRUD is not the product. A thin repository makes SQL inspectable and still guarantees parameter binding.
 - **Full refresh ETL:** the public files are immutable snapshots and small enough for one transactional refresh. Incremental watermark logic would add failure modes without source support.
-- **No cache service:** static aggregates and platform caching cover the public demo. Redis would duplicate state and operations.
-- **Snapshot deployment:** a real-data aggregate file allows a zero-cost visual demo. It is clearly labeled and cannot expose controls that do not recompute data.
+- **No cache service:** the bounded, read-only workload and platform delivery are sufficient at current portfolio scale. Redis would duplicate state and operations.
+- **Snapshot deployment:** a real-data aggregate file remains available for a static use case. It is clearly labeled and cannot expose controls that do not recompute data; the public deployment uses the API instead.
 
 ## Failure behavior
 
