@@ -95,3 +95,13 @@ export function formatCategoryLabel(value: string, locale: "pt-BR" | "en-US"): s
   if (locale === "pt-BR") return PT_BR_CATEGORY_LABELS[value] ?? humanizeCategoryLabel(value, locale);
   return humanizeCategoryLabel(value, locale);
 }
+
+export function formatCategoryPerformanceLabel(
+  category: { categoryName: string; categoryNameEnglish: string },
+  locale: "pt-BR" | "en-US"
+): string {
+  return formatCategoryLabel(
+    locale === "pt-BR" ? category.categoryName : category.categoryNameEnglish,
+    locale
+  );
+}

@@ -88,7 +88,7 @@ export async function loadAnalytics(
     },
     AnalyticsSnapshot["categories"],
     AnalyticsSnapshot["categories"],
-    Array<Omit<AnalyticsSnapshot["sellers"][number], "sellerLabel"> & { sellerId: string }>,
+    AnalyticsSnapshot["sellers"],
     AnalyticsSnapshot["retention"]
   ];
   const { topCategories, ...overviewData } = overview;
@@ -103,15 +103,7 @@ export async function loadAnalytics(
     },
     categories: products,
     categoryOptions: options.map(toCategoryOption),
-    sellers: rawSellers.map((seller, index) => ({
-      sellerLabel: `Seller ${String(index + 1).padStart(2, "0")}`,
-      state: seller.state,
-      revenue: seller.revenue,
-      orders: seller.orders,
-      averageOrderValue: seller.averageOrderValue,
-      averageReviewScore: seller.averageReviewScore,
-      revenueRank: seller.revenueRank
-    })),
+    sellers: rawSellers,
     retention
   };
 }

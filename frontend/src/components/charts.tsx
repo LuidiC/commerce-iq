@@ -12,6 +12,7 @@ import {
   XAxis,
   YAxis
 } from "recharts";
+import { formatCategoryPerformanceLabel } from "@/i18n/category-labels";
 import { useLocale } from "@/i18n/locale-provider";
 import { formatCompactCurrency, formatCurrency, formatDate } from "@/lib/format";
 import type { CategoryPerformance, MonthlyRevenue, SellerPerformance } from "@/lib/types";
@@ -50,7 +51,10 @@ export function RevenueChart({ data, movingAverage = false }: { data: MonthlyRev
 
 export function CategoryChart({ data, limit = 8 }: { data: CategoryPerformance[]; limit?: number }) {
   const { locale, message } = useLocale();
-  const chartData = data.slice(0, limit).map((item) => ({ ...item, label: item.category.replaceAll("_", " ") }));
+  const chartData = data.slice(0, limit).map((item) => ({
+    ...item,
+    label: formatCategoryPerformanceLabel(item, locale)
+  }));
   return (
     <div className="chart-wrap category-chart" role="img" aria-label={message.overview.categoryTitle}>
       <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0} initialDimension={{ width: 520, height: 280 }}>

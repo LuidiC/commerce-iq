@@ -4,7 +4,11 @@ import {
   formatDate,
   formatOptionalNumber
 } from "./format";
-import { formatCategoryLabel, PT_BR_CATEGORY_LABELS } from "@/i18n/category-labels";
+import {
+  formatCategoryLabel,
+  formatCategoryPerformanceLabel,
+  PT_BR_CATEGORY_LABELS
+} from "@/i18n/category-labels";
 
 describe("locale formatting", () => {
   it("keeps BRL while respecting locale separators", () => {
@@ -37,5 +41,17 @@ describe("locale formatting", () => {
     expect(formatCategoryLabel("agro_industry_and_commerce", "en-US"))
       .toBe("Agro Industry & Commerce");
     expect(formatCategoryLabel("categoria_futura", "pt-BR")).toBe("Categoria futura");
+  });
+
+  it("uses localized display names without changing the category technical value", () => {
+    const category = {
+      category: "health_beauty",
+      categoryName: "beleza_saude",
+      categoryNameEnglish: "health_beauty"
+    };
+
+    expect(formatCategoryPerformanceLabel(category, "pt-BR")).toBe("Beleza e Saúde");
+    expect(formatCategoryPerformanceLabel(category, "en-US")).toBe("Health Beauty");
+    expect(category.category).toBe("health_beauty");
   });
 });

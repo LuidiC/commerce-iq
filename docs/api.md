@@ -24,7 +24,7 @@ The maximum date span is 1,100 days. Unknown fields are ignored by FastAPI's fun
 | `GET /sales` | monthly revenue, MoM, cumulative revenue, moving average |
 | `GET /customers` | repeat behavior and high-value count |
 | `GET /products` | category performance ranking, including Portuguese and English category names |
-| `GET /sellers` | anonymized seller ranking |
+| `GET /sellers` | anonymized seller ranking; returns a response-local `seller_label`, never the source seller UUID |
 | `GET /retention` | long-form cohort retention cells |
 | `GET /delivery` | on-time/late delivery comparison |
 
@@ -37,6 +37,10 @@ Accept: application/json
 
 Each product row keeps `category` as the backward-compatible filter value and also
 returns `category_name` and `category_name_english` for locale-aware presentation.
+
+Seller rows expose `seller_label` (for example, `Seller 01`) as a deterministic ordinal
+within the returned ordering. Source `seller_id` values remain supported as an API filter but
+are never included in public response bodies.
 
 ## Error contract
 

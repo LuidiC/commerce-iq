@@ -1,6 +1,5 @@
 from datetime import date
 from decimal import Decimal
-from uuid import UUID
 
 from pydantic import (
     BaseModel,
@@ -68,7 +67,7 @@ class CustomerBehavior(ApiModel):
 
 
 class SellerPerformance(ApiModel):
-    seller_id: UUID
+    seller_label: str
     state: str
     revenue: Decimal
     orders: int

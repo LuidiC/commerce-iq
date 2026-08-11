@@ -9,6 +9,7 @@ import { KpiGrid } from "./kpi-grid";
 import { MetricChip } from "./metric-chip";
 import { PageHeader } from "./page-header";
 import { EmptyState, ErrorState, LoadingState } from "./states";
+import { formatCategoryPerformanceLabel } from "@/i18n/category-labels";
 import { useLocale } from "@/i18n/locale-provider";
 import { formatChange, formatCurrency, formatDate, formatNumber, formatOptionalNumber } from "@/lib/format";
 import { loadAnalytics, USES_LIVE_API } from "@/lib/api";
@@ -161,7 +162,7 @@ function Products({ data }: { data: AnalyticsSnapshot }) {
         <div className="table-scroll"><table>
           <thead><tr><th>{message.common.rank}</th><th>{message.common.category}</th><th>{message.common.revenue}</th><th>{message.products.share}</th><th>{message.common.orders}</th><th>{message.products.items}</th><th>{message.common.review}</th></tr></thead>
           <tbody>{data.categories.slice(0, 25).map((row) => <tr key={row.category}>
-            <td className="rank-cell">{String(row.revenueRank).padStart(2, "0")}</td><td><strong className="category-name">{row.category.replaceAll("_", " ")}</strong></td><td>{formatCurrency(row.revenue, locale)}</td><td><div className="share-cell"><span><i style={{ width: `${Math.min(100, row.revenueSharePct * 5)}%` }} /></span><b>{formatNumber(row.revenueSharePct, locale, 1)}%</b></div></td><td>{formatNumber(row.orders, locale)}</td><td>{formatNumber(row.items, locale)}</td><td>{formatOptionalNumber(row.averageReviewScore, locale, 2)}</td>
+            <td className="rank-cell">{String(row.revenueRank).padStart(2, "0")}</td><td><strong className="category-name">{formatCategoryPerformanceLabel(row, locale)}</strong></td><td>{formatCurrency(row.revenue, locale)}</td><td><div className="share-cell"><span><i style={{ width: `${Math.min(100, row.revenueSharePct * 5)}%` }} /></span><b>{formatNumber(row.revenueSharePct, locale, 1)}%</b></div></td><td>{formatNumber(row.orders, locale)}</td><td>{formatNumber(row.items, locale)}</td><td>{formatOptionalNumber(row.averageReviewScore, locale, 2)}</td>
           </tr>)}</tbody>
         </table></div>
       </DataPanel>

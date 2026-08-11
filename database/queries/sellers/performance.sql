@@ -48,7 +48,16 @@ seller_reviews AS (
     GROUP BY seller_orders.seller_id
 )
 SELECT
-    seller_metrics.seller_id,
+    CONCAT(
+        'Seller ',
+        LPAD(
+            ROW_NUMBER() OVER (
+                ORDER BY seller_metrics.revenue DESC, seller_metrics.seller_id
+            )::text,
+            2,
+            '0'
+        )
+    ) AS seller_label,
     seller_metrics.state,
     seller_metrics.revenue,
     seller_metrics.orders,
@@ -58,5 +67,5 @@ SELECT
     RANK() OVER (ORDER BY seller_metrics.revenue DESC) AS revenue_rank
 FROM seller_metrics
 LEFT JOIN seller_reviews USING (seller_id)
-ORDER BY seller_metrics.revenue DESC
+ORDER BY seller_metrics.revenue DESC, seller_metrics.seller_id
 LIMIT %(limit)s;

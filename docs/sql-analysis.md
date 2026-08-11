@@ -106,7 +106,9 @@ AVG(revenue) OVER (
 
 **Why `RANK`:** equal revenue should share a position and leave the following ordinal gap, matching competition ranking. Seller reviews use the same per-order reduction as category reviews.
 
-**Privacy:** the API maps source UUIDs to stable rank labels such as `Seller 01`; an optional snapshot follows the same rule.
+**Privacy:** the API derives response-local ordinal labels such as `Seller 01` from the
+returned revenue ordering and never serializes source seller UUIDs. An optional snapshot
+follows the same rule.
 
 ## Delivery and review impact
 

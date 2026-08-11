@@ -20,7 +20,7 @@
 | Database mutation through API | separate runtime `commerceiq_app` role with minimum privileges (CONNECT, schema USAGE, table SELECT) and read-only transactions |
 | Expensive queries / resource exhaustion | max range and list limit, 10s statement timeout, small connection pool, platform rate limits recommended |
 | Cross-origin browser access | explicit CORS origins including the stable Vercel frontend, wildcard rejection, GET-only methods, no credentials |
-| Re-identification | aggregate endpoints, no customer IDs/review text/exact coordinates in the browser or optional snapshot |
+| Re-identification | aggregate endpoints, no customer IDs/source seller UUIDs/review text/exact coordinates in the browser or optional snapshot |
 | Supply-chain vulnerability | exact versions, lockfile, and local `npm audit`/`pip-audit`; automated alerts recommended |
 | Dataset schema drift / accidental change | exact headers, content fingerprint, constraints, atomic load |
 

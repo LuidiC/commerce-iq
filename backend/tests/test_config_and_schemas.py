@@ -25,10 +25,11 @@ def test_cors_origins_rejects_wildcard(monkeypatch: MonkeyPatch) -> None:
         Settings(_env_file=None)
 
 
-def test_seller_performance_serializes_database_uuid_as_a_json_string() -> None:
+def test_seller_performance_excludes_database_uuid_from_public_payload() -> None:
     seller_id = UUID("4869f7a5-dfa2-77a7-dca6-462dcf3b52b2")
     seller = SellerPerformance.model_validate(
         {
+            "seller_label": "Seller 01",
             "seller_id": seller_id,
             "state": "SP",
             "revenue": "100.00",
@@ -39,7 +40,9 @@ def test_seller_performance_serializes_database_uuid_as_a_json_string() -> None:
         }
     )
 
-    assert seller.model_dump(mode="json")["seller_id"] == str(seller_id)
+    payload = seller.model_dump(mode="json")
+    assert payload["seller_label"] == "Seller 01"
+    assert "seller_id" not in payload
 
 
 def test_category_performance_preserves_technical_and_localized_names() -> None:
