@@ -12,6 +12,8 @@ import {
   XAxis,
   YAxis
 } from "recharts";
+import { useMemo, useSyncExternalStore } from "react";
+import { evenlySpacedTicks, wrapChartLabel } from "./chart-utils";
 import { formatCategoryPerformanceLabel } from "@/i18n/category-labels";
 import { useLocale } from "@/i18n/locale-provider";
 import { formatCompactCurrency, formatCurrency, formatDate } from "@/lib/format";
@@ -19,9 +21,39 @@ import type { CategoryPerformance, MonthlyRevenue, SellerPerformance } from "@/l
 
 const gridColor = "#e8e8e3";
 const axisStyle = { fontSize: 11, fill: "#74746d" };
+const mobileMediaQuery = "(max-width: 620px)";
+
+function subscribeToMobileViewport(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(mobileMediaQuery);
+  mediaQuery.addEventListener("change", onStoreChange);
+  return () => mediaQuery.removeEventListener("change", onStoreChange);
+}
+
+function isMobileViewport() {
+  return window.matchMedia(mobileMediaQuery).matches;
+}
+
+function useIsMobileViewport() {
+  return useSyncExternalStore(subscribeToMobileViewport, isMobileViewport, () => false);
+}
+
+function CategoryTick({ x = 0, y = 0, payload }: { x?: number; y?: number; payload?: { value?: string } }) {
+  const lines = wrapChartLabel(String(payload?.value ?? ""), 18);
+  const firstLineOffset = lines.length > 1 ? -6 : 4;
+
+  return (
+    <text x={x} y={y} textAnchor="end" fill="#74746d" fontSize={11}>
+      {lines.map((line, index) => (
+        <tspan key={line} x={x} dy={index === 0 ? firstLineOffset : 12}>{line}</tspan>
+      ))}
+    </text>
+  );
+}
 
 export function RevenueChart({ data, movingAverage = false }: { data: MonthlyRevenue[]; movingAverage?: boolean }) {
   const { locale, message } = useLocale();
+  const isMobile = useIsMobileViewport();
+  const mobileTicks = useMemo(() => evenlySpacedTicks(data.map((item) => item.month), 5), [data]);
   return (
     <div className="chart-wrap" role="img" aria-label={message.overview.revenueTrend}>
       <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0} initialDimension={{ width: 800, height: 280 }}>
@@ -33,7 +65,7 @@ export function RevenueChart({ data, movingAverage = false }: { data: MonthlyRev
             </linearGradient>
           </defs>
           <CartesianGrid vertical={false} stroke={gridColor} strokeDasharray="3 4" />
-          <XAxis dataKey="month" tickFormatter={(value: string) => formatDate(value, locale, { month: "short" })} tick={axisStyle} axisLine={false} tickLine={false} dy={8} />
+          <XAxis dataKey="month" ticks={isMobile ? mobileTicks : undefined} interval={isMobile ? 0 : undefined} minTickGap={isMobile ? 0 : undefined} tickMargin={8} tickFormatter={(value: string) => formatDate(value, locale, { month: "short" })} tick={axisStyle} axisLine={false} tickLine={false} />
           <YAxis tickFormatter={(value: number) => formatCompactCurrency(value, locale)} tick={axisStyle} axisLine={false} tickLine={false} width={68} />
           <Tooltip
             cursor={{ stroke: "#9b9b92", strokeDasharray: "3 3" }}
@@ -51,17 +83,18 @@ export function RevenueChart({ data, movingAverage = false }: { data: MonthlyRev
 
 export function CategoryChart({ data, limit = 8 }: { data: CategoryPerformance[]; limit?: number }) {
   const { locale, message } = useLocale();
+  const isMobile = useIsMobileViewport();
   const chartData = data.slice(0, limit).map((item) => ({
     ...item,
     label: formatCategoryPerformanceLabel(item, locale)
   }));
   return (
-    <div className="chart-wrap category-chart" role="img" aria-label={message.overview.categoryTitle}>
+    <div className={`chart-wrap category-chart${isMobile ? " category-chart-mobile" : ""}`} role="img" aria-label={message.overview.categoryTitle}>
       <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0} initialDimension={{ width: 520, height: 280 }}>
         <BarChart data={chartData} layout="vertical" margin={{ top: 4, right: 18, bottom: 0, left: 4 }}>
           <CartesianGrid horizontal={false} stroke={gridColor} />
           <XAxis type="number" tickFormatter={(value) => formatCompactCurrency(value, locale)} tick={axisStyle} axisLine={false} tickLine={false} />
-          <YAxis type="category" dataKey="label" width={112} tick={axisStyle} axisLine={false} tickLine={false} tickFormatter={(value: string) => value.length > 18 ? `${value.slice(0, 17)}…` : value} />
+          <YAxis type="category" dataKey="label" width={isMobile ? 142 : 112} tick={isMobile ? <CategoryTick /> : axisStyle} axisLine={false} tickLine={false} tickFormatter={isMobile ? undefined : (value: string) => value.length > 18 ? `${value.slice(0, 17)}…` : value} />
           <Tooltip cursor={{ fill: "#f4f4f0" }} formatter={(value) => [formatCurrency(Number(value), locale), message.common.revenue]} />
           <Bar dataKey="revenue" fill="#176b5b" radius={[0, 3, 3, 0]} barSize={15} />
         </BarChart>

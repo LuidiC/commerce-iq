@@ -266,6 +266,7 @@ td strong { color: var(--ink); font-weight: 600; }
   .kpi-change small { display: none; }
   .data-panel { padding: 16px 13px; }
   .chart-wrap, .category-chart { height: 250px; }
+  .category-chart-mobile { height: 280px; }
   .metric-chip-grid, .metric-card-grid.four { grid-template-columns: 1fr 1fr; }
   .delivery-comparison, .delivery-cards { grid-template-columns: 1fr; }
   .delivery-cards article > div { grid-template-columns: 1fr 1fr; }
