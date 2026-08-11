@@ -16,7 +16,7 @@ The Brazilian E-Commerce Public Dataset by Olist contains roughly 100,000 anonym
 
 CommerceIQ turns that dataset into a reproducible PostgreSQL analytical model, versioned SQL queries, a read-only FastAPI service, and a bilingual Next.js interface. It is built to examine sales, customers, categories, sellers, retention, and delivery without presenting historical data as Olist's current business performance.
 
-![CommerceIQ executive overview](docs/screenshots/overview.png)
+![CommerceIQ executive overview](docs/screenshots/overview.en.png)
 
 ## Available analysis
 

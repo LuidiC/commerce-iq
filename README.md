@@ -16,7 +16,7 @@ O Brazilian E-Commerce Public Dataset by Olist reúne aproximadamente 100 mil pe
 
 Construí o CommerceIQ para transformar esse conjunto em um modelo analítico reproduzível no PostgreSQL, consultas SQL versionadas, uma API FastAPI somente-leitura e uma interface Next.js bilíngue. O objetivo é analisar vendas, clientes, categorias, sellers, retenção e entregas sem tratar os dados históricos como desempenho atual da Olist.
 
-![Visão executiva do CommerceIQ](docs/screenshots/overview.png)
+![Visão executiva do CommerceIQ](docs/screenshots/overview.pt.png)
 
 ## Análises disponíveis
 
@@ -32,15 +32,15 @@ Os filtros públicos incluem período, estado do cliente e categoria. As categor
 
 ## Competências demonstradas
 
-| Área | Evidências no projeto |
-|---|---|
-| SQL analítico | CTEs, `LAG`, `ROW_NUMBER`, `RANK`, `DENSE_RANK`, `SUM() OVER`, análise de coortes e filtros com `EXISTS`. |
-| Modelagem e qualidade | Modelo relacional com constraints, definição explícita de grão e prevenção de duplicação de fatos em joins. |
-| Desempenho | Índices orientados aos caminhos de leitura e procedimento reproduzível com `EXPLAIN (ANALYZE, BUFFERS)`. |
-| Engenharia de dados | ETL Python com validação de contratos, transformações, Psycopg `COPY` e fingerprint para idempotência. |
-| Backend | FastAPI, Pydantic e Psycopg com contratos tipados, parâmetros vinculados e endpoints agregados somente-leitura. |
-| Frontend | Next.js, React e TypeScript com i18n, filtros na URL e estados de carregamento, vazio e erro. |
-| Operação e segurança | Docker Compose; deploy Vercel → Render → Neon; CORS restritivo e role PostgreSQL de mínimo privilégio. |
+| Área                  | Evidências no projeto                                                                                           |
+| --------------------- | --------------------------------------------------------------------------------------------------------------- |
+| SQL analítico         | CTEs, `LAG`, `ROW_NUMBER`, `RANK`, `DENSE_RANK`, `SUM() OVER`, análise de coortes e filtros com `EXISTS`.       |
+| Modelagem e qualidade | Modelo relacional com constraints, definição explícita de grão e prevenção de duplicação de fatos em joins.     |
+| Desempenho            | Índices orientados aos caminhos de leitura e procedimento reproduzível com `EXPLAIN (ANALYZE, BUFFERS)`.        |
+| Engenharia de dados   | ETL Python com validação de contratos, transformações, Psycopg `COPY` e fingerprint para idempotência.          |
+| Backend               | FastAPI, Pydantic e Psycopg com contratos tipados, parâmetros vinculados e endpoints agregados somente-leitura. |
+| Frontend              | Next.js, React e TypeScript com i18n, filtros na URL e estados de carregamento, vazio e erro.                   |
+| Operação e segurança  | Docker Compose; deploy Vercel → Render → Neon; CORS restritivo e role PostgreSQL de mínimo privilégio.          |
 
 ## Arquitetura
 
@@ -57,15 +57,15 @@ O ETL e as migrations usam uma role administrativa apropriada para provisionamen
 
 ## Stack
 
-| Camada | Tecnologias |
-|---|---|
-| Database | PostgreSQL 18 |
-| ETL | Python 3.12, Psycopg, `COPY` |
-| Backend | FastAPI, Pydantic, Psycopg |
-| Frontend | Next.js 16, React 19, TypeScript |
-| Visualização | Recharts |
+| Camada         | Tecnologias                          |
+| -------------- | ------------------------------------ |
+| Database       | PostgreSQL 18                        |
+| ETL            | Python 3.12, Psycopg, `COPY`         |
+| Backend        | FastAPI, Pydantic, Psycopg           |
+| Frontend       | Next.js 16, React 19, TypeScript     |
+| Visualização   | Recharts                             |
 | Infraestrutura | Docker Compose, Vercel, Render, Neon |
-| Qualidade | Pytest, Ruff, mypy, Vitest, ESLint |
+| Qualidade      | Pytest, Ruff, mypy, Vitest, ESLint   |
 
 ## SQL em destaque
 
