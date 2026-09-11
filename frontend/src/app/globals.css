@@ -59,9 +59,11 @@ button { color: inherit; }
 .sidebar-meta span:not(.status-dot) { font-size: 10px; color: #828c86; }
 .collapse-button { position: absolute; top: 75px; right: -11px; width: 22px; height: 22px; display: grid; place-items: center; padding: 0; color: #abb3ae; background: #2a312d; border: 1px solid #414943; border-radius: 50%; cursor: pointer; }
 .sidebar-close, .mobile-menu, .sidebar-backdrop { display: none; }
-.is-collapsed .brand-copy, .is-collapsed .nav-item span, .is-collapsed .sidebar-meta div { opacity: 0; pointer-events: none; }
-.is-collapsed .nav-item { justify-content: center; padding: 0; }
-.is-collapsed .sidebar-meta { justify-content: center; padding-inline: 0; }
+.is-collapsed .brand-row { justify-content: center; padding-inline: 0; }
+.is-collapsed .brand-copy, .is-collapsed .nav-item span, .is-collapsed .sidebar-meta div { display: none; }
+.is-collapsed .nav-list { align-items: center; }
+.is-collapsed .nav-item { width: 39px; flex: 0 0 39px; justify-content: center; gap: 0; padding: 0; }
+.is-collapsed .sidebar-meta { width: 40px; height: 40px; margin-inline: auto; padding: 0; justify-content: center; }
 
 .content-column { min-height: 100vh; display: flex; flex-direction: column; }
 .topbar { position: sticky; z-index: 20; top: 0; height: var(--topbar-height); display: flex; align-items: center; justify-content: flex-end; padding: 0 34px; background: rgba(250, 250, 247, .9); border-bottom: 1px solid var(--line); backdrop-filter: blur(10px); }
